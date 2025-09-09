@@ -1,8 +1,10 @@
 # Your startup name here
 
-[My Notes](notes.md)
+[CS260 Lessons Learned](notes.md)
 
-A brief description of the application here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+This file contains an organized breakdown of the lessons I learned related to Web Programming or the CS260 BYU course. This file may contain references to new files with additional information. Please reference these files as necessary.
+
+Note: Not everything in this file will contain general programming information. Many of the notes may be specific to the "startup" project created in CS260.
 
 
 > [!NOTE]
