@@ -41,7 +41,10 @@ I will use these avaliable technologies to complete the following:
 
 ### Design
 
-![Login](/Users/cotter.ashcraft/Desktop/BYU/Fall 2025/cs260/startup/pics/sketches/OutFishn Rough Sketch-1.jpg)
+![Login](./pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
+![Dashboard](./pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
+![Log](./pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
+
 
 > [!NOTE]
 >  This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
