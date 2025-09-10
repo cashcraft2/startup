@@ -14,6 +14,30 @@ Thank you.
 
 Are you tired of sifting through Instagram pictures of cats, summer getaways, or whatever your friend had for lunch that day, eagerly looking for something to hook your attention? Let me introduce you to OutFishn, an angler's official social media replacement. Log your catches - show off that monster fish, get real-time alerts when a friend does the same, check the leaderboards, learn where to cast next, and much more! Create an account on OutFishn today and start reelin'.
 
+### Key Features
+
+* Register and login securely over HTTPS
+* Log and persistenly store your catches (size, weight, time, location, bait, photo, etc.)
+* Connect and share with your friends
+* Get real-time alerts when a friend reels in a fish
+* Race to the top of the leaderboards
+* Get valuable input as to where you should cast next
+
+*** Technologies
+
+I will use these avaliable technologies to complete the following:
+
+- **HTML** - Uses correct HTML structure for application. There will be an HTML page for login, home page (includes leaderboard and alerts), a catch log page, and a trip planning page.
+- **CSS** - Application styling that will adjust correctly for various screen sizes. Clean and minimalist design (includes strategic white space, logo, colors, and contrast).
+- **React** - Provides registering, login, adding friends, logging fish, and leaderboard functionality. As well as use of React for routing and components.
+- **Service** - Backend service with the following endpoints:
+  - register
+  - login
+  - storing caught fish data
+  - adding friends
+  - plan trip
+- **DB** - Stores registration and login authtokens to ensure user is logged in. Stores each user's catch history, friends, and fishing plans. Must be signed in to perform these actions.
+- **WebSocket** - When a user logs a new fish, the catch will be broadcasted to each of their friends.
 
 
 
