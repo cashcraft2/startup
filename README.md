@@ -39,10 +39,13 @@ I will use these avaliable technologies to complete the following:
 - **DB** - Stores registration and login authtokens to ensure user is logged in. Stores each user's catch history, friends, and fishing plans. Must be signed in to perform these actions.
 - **WebSocket** - When a user logs a new fish, the catch will be broadcasted to each of their friends.
 
-### Design
+### Design Sketches
 
+### Register/Login Page:
 ![Login](./pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
+### User Dashboard
 ![Dashboard](./pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
+### Log New Catch Page
 ![Log](./pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
 
 
