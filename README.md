@@ -41,11 +41,11 @@ I will use these avaliable technologies to complete the following:
 
 ### Design Sketches
 
-### Register/Login Page:
+<u>Register/Login Page:</u>
 ![Login](./pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
-### User Dashboard
+<u>User Dashboard:</u>
 ![Dashboard](./pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
-### Log New Catch Page
+<u>Log New Catch Page:</u>
 ![Log](./pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
 
 
