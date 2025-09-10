@@ -23,7 +23,7 @@ Are you tired of sifting through Instagram pictures of cats, summer getaways, or
 * Race to the top of the leaderboards
 * Get valuable input as to where you should cast next
 
-*** Technologies
+### Technologies
 
 I will use these avaliable technologies to complete the following:
 
@@ -39,7 +39,9 @@ I will use these avaliable technologies to complete the following:
 - **DB** - Stores registration and login authtokens to ensure user is logged in. Stores each user's catch history, friends, and fishing plans. Must be signed in to perform these actions.
 - **WebSocket** - When a user logs a new fish, the catch will be broadcasted to each of their friends.
 
+### Design
 
+![Login](Users/cotter.ashcraft/Desktop/BYU/Fall 2025/cs260/pics/sketches/OutFishn Rough Sketch-1.jpg)
 
 > [!NOTE]
 >  This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
