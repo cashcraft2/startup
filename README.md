@@ -1,4 +1,4 @@
-# Your startup name here
+# OutFishn
 
 [CS260 Lessons Learned](notes.md)
 
@@ -7,6 +7,14 @@ This file contains an organized breakdown of the lessons I learned related to We
 Note: Not everything in this file will contain general programming information. Many of the notes may be specific to the "startup" project created in CS260.
 
 Thank you.
+
+## Specification Deliverable
+
+### Elevator Pitch
+
+Are you tired of sifting through Instagram pictures of cats, summer getaways, or whatever your friend had for lunch that day, eagerly looking for something to hook your attention? Let me introduce you to OutFishn, an angler's official social media replacement. Log your catches - show off that monster fish, get real-time alerts when a friend does the same, check the leaderboards, learn where to cast next, and much more! Create an account on OutFishn today and start reelin'.
+
+
 
 
 > [!NOTE]
