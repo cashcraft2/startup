@@ -10,8 +10,20 @@
 
 ## AWS
 
-My IP address is: [INSERT IP ADDRESS HERE]
-Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
+My IP address is: 23.21.161.220
+
+My server is running from the us-east-1 center in Virgina.
+
+I have created an elastic IP address that and allocated it to my instance so that I will always have this same public IP.
+
+I have attached an Amazon Machine Image (AMI) to the base of my server that was created previously for the CS260 class at BYU. This AMI has Ubuntu, Node.js, NVM, Caddy Server, and PM2 built in so I won't need to install them.
+
+For this instance I have decided to go with a t3.micro instance type. This should be sufficient for my web app, but since I have allocated an elastic IP, I will not get a new IP address if I ever want to upgrade to a higher instance type.
+
+In the network settings, I needed to create a security group. I needed to make sure that SSH, HTTP, and HTTPS traffic is allowed from anywhere. (I did not have this at first, and I was unable to load the webpage in my browser). A security group represent the rules for allowing access to my servers.
+
+I was also able to ssh into my server using the following command: `➜  ssh -i [key pair file] ubuntu@[ip address]`
+I needed to make sure that my private key was stored safely and that the permissions were only allowed for me using this command: `chmod  600 yourkeypairfile.pem`
 
 ## Caddy
 
