@@ -56,6 +56,18 @@ After following these steps and ensuring the verification process was finished (
 
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
 
+I learned that Caddy is what we will be using to act as a gateway to the different services and host our web application files. Basically all I did in this step was `ssh` into my server, and change the `Caddyfile` to use my domain. 
+
+I used the following to `ssh` into my server:
+`ssh -i [key pair file] ubuntu@[yourdomainnamehere]`
+
+I edited the `Caddyfile` using the following:
+`vi Caddyfile`
+
+We replaced port 80 with the domain name as well as modified the other Caddy rules to the domain name. Finally, we restarted Caddy so that the changes would take effect.
+
+Now our webpage is using HTTPS rather than HTTP.
+
 ## HTML
 
 This was easy. I was careful to use the correct structural elements such as header, footer, main, nav, and form. The links between the three views work great using the `a` element.
