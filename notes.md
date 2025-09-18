@@ -10,6 +10,8 @@
 
 ## AWS
 
+### Instance
+
 My IP address is: 23.21.161.220
 
 My server is running from the us-east-1 center in Virgina.
@@ -25,9 +27,46 @@ In the network settings, I needed to create a security group. I needed to make s
 I was also able to ssh into my server using the following command: `➜  ssh -i [key pair file] ubuntu@[ip address]`
 I needed to make sure that my private key was stored safely and that the permissions were only allowed for me using this command: `chmod  600 yourkeypairfile.pem`
 
+### Domain Name
+
+For this web application, I have decided to purchase my own domain name from AWS.
+
+The domain name for my application is `http://outfishn.click`
+
+In order to do this I navigated to the Route 53 section on the left hand side menu. I then followed these instructions:
+
+Find an unused root domain that contains the appropriate suffix based on the price you want to pay. 
+
+Purchase your new root domain. Then follow the following steps to ensure your root domain is tied to your public IP address from your instance:
+
+* Open the AWS console in your browser and log in.
+* Navigate to the Route 53 service.
+* Select the Hosted zones option from the menu on the left.
+* Click on your domain name to view the details. This should display existing DNS records with types such as NS, and SOA.
+* Create the root domain DNS record. This will associate your domain name with your server's IP address
+* In the Value box enter the public IP address of your server.
+* Press Create records
+* Create a DNS record that will map to your server for any subdomain of your root domain name. 
+* In the Value box enter the public IP address of your server.
+* Press Create records
+
+After following these steps and ensuring the verification process was finished (including email verification), I was able to type my newly created domain name into my browser and see my webpage displayed.
+
 ## Caddy
 
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
+
+I learned that Caddy is what we will be using to act as a gateway to the different services and host our web application files. Basically all I did in this step was `ssh` into my server, and change the `Caddyfile` to use my domain. 
+
+I used the following to `ssh` into my server:
+`ssh -i [key pair file] ubuntu@[yourdomainnamehere]`
+
+I edited the `Caddyfile` using the following:
+`vi Caddyfile`
+
+We replaced port 80 with the domain name as well as modified the other Caddy rules to the domain name. Finally, we restarted Caddy so that the changes would take effect.
+
+Now our webpage is using HTTPS rather than HTTP.
 
 ## HTML
 
