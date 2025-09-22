@@ -1,0 +1,45 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OutFishn | Home</title>
+    <link rel="icon" type="image/png" href="pics/logo/outfishn_logo_only.png" />
+  </head>
+  
+  <body>
+    <header>
+        <nav>
+            <menu>
+                <a href="home.html">Home</a>
+                <a href="plan.html">Trip Planner</a>
+                <a href="index.html">Sign Out</a>
+            </menu>
+        </nav>
+        <hr />
+    </header>
+    <h1>Fish Log</h1>
+    <main>
+        <label for="photo-upload" class="photo-upload-button">
+            Upload Photo
+        </label>
+        <input type="file" id="photo-upload" accept="image/*" />
+        <form>
+            <div>
+                <label for="fish-species">Species: </label>
+                <input type="text" id="fish-species" placeholder="ex. Rainbow Trout" />
+            </div>
+            <div>
+                <label for="fish-length">Length (in): </label>
+                <input type="number" id="fish-length" step="0.1" min="0" placeholder="ex. 14.5"/>
+            </div>
+            <div>
+                <label for="fish-weight">Weight (lb): </label>
+                <input type="number" id="fish-weight" step="0.01" min="0" placeholder="ex. 8.92"/>
+            </div>
+            <div>
+                <label for="bait">Bait used: </label>
+                <input type="text" id="bait" placeholder="Power Bait"/>
+            </div>
+        </form>
+    </main>
