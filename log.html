@@ -30,13 +30,13 @@
         </nav>
         <hr />
     </header>
-    <h1>Fish Log</h1>
+    <h1>Log New Catch</h1>
     <main>
         <label for="photo-upload" class="photo-upload-button">
             Upload Photo
         </label>
         <input type="file" id="photo-upload" accept="image/*" />
-        <form>
+        <form id="fish-log-form">
             <div>
                 <label for="fish-species">Species: </label>
                 <input type="text" id="fish-species" placeholder="ex. Rainbow Trout" />
@@ -81,8 +81,58 @@
                 <input type="hidden" id="latitude" name="latitude" />
                 <input type="hidden" id="longitude" name="longitude" />
             </div>
+            <div>
+                <label for="notes">Notes: </label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Additional observations..."></textarea>
+            </div>
             <button type="submit">Log Catch</button>
         </form>
+        <hr>
+        <h2>Fish Log</h2>
+        <table id="catches-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Species</th>
+                    <th>Length (in)</th>
+                    <th>Weight (lb)</th>
+                    <th>Bait</th>
+                    <th>Date/Time</th>
+                    <th>Temp.(F)</th>
+                    <th>Weather</th>
+                    <th>Location</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>[Photo]</td>
+                    <td>Rainbow Trout</td>
+                    <td>10.8</td>
+                    <td>9.6</td>
+                    <td>Power Bait</td>
+                    <td>09/23/25, 4:33PM</td>
+                    <td>65.8</td>
+                    <td>Sunny</td>
+                    <td>[Location]</td>
+                    <td>Caught on East side of the reservoir.</td>
+                </tr>
+                <tr>
+                    <td>[Photo]</td>
+                    <td>Largemouth Bass</td>
+                    <td>12.4</td>
+                    <td>10.9</td>
+                    <td>None</td>
+                    <td>09/08/25, 5:33AM</td>
+                    <td>62.7</td>
+                    <td>Partly Cloudy</td>
+                    <td>[Location]</td>
+                    <td>Early bird gets the worm.</td>
+                </tr>
+            </tbody>
+        </table>
+
+
         <img src="pics/logo/outfishn_logo_only.png" alt="OutFishn Logo" width="250px" height="250px"/>
     </main>
     <footer>
