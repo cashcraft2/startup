@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OutFishn | Home</title>
     <link rel="icon" type="image/png" href="pics/logo/outfishn_logo_only.png" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4Wx5P/F5t1R1xT3K8bXl8n6X7qG5n9N1z4F8N3f5QxU=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-2Bv9t/E0j0V6N5f2e6N3e7z2q5l5f3n4q3t4n4f7l3n4w=" crossorigin=""></script>
+
+    <style>
+        #map {
+            height: 250px;
+            width: 250px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
   </head>
   
   <body>
@@ -41,5 +53,17 @@
                 <label for="bait">Bait used: </label>
                 <input type="text" id="bait" placeholder="Power Bait"/>
             </div>
+            <div>
+                <label for="catch-time">Time of Catch: </label>
+                <input type="datetime-local" id="catch-time" name="catch-time" />
+            </div>
+            <div>
+                <label>Location: </label>
+                <div id="map"></div>
+                <input type="hidden" id="latitude" name="latitude" />
+                <input type="hidden" id="longitude" name="longitude" />
+            </div>
+            <button type="submit">Log Catch</button>
         </form>
+        <img src="pics/logo/outfishn_logo_only.png" alt="OutFishn Logo" width="250px" height="250px"/>
     </main>
