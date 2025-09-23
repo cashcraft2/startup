@@ -51,11 +51,29 @@
             </div>
             <div>
                 <label for="bait">Bait used: </label>
-                <input type="text" id="bait" placeholder="Power Bait"/>
+                <input type="text" id="bait" placeholder="ex. Power Bait"/>
             </div>
             <div>
                 <label for="catch-time">Time of Catch: </label>
                 <input type="datetime-local" id="catch-time" name="catch-time" />
+            </div>
+            <div>
+                <label for="air-temp">Temperature (F):</label>
+                <input type="number" id="air-temp" name="air-temp" step="0.1" placeholder="ex. 72.5"/>
+            </div>
+            <div>
+                <label for="sky-conditions">Sky Conditions:</label>
+                <input list="sky-options" id="sky-conditions" name="sky-conditions" placeholder="ex. Sunny"/>
+                <datalist id="sky-options">
+                  <option value="Clear"></option>
+                  <option value="Sunny"></option>
+                  <option value="Partly Cloudy"></option>
+                  <option value="Cloudy"></option>
+                  <option value="Overcast"></option>
+                  <option value="Rainy"></option>
+                  <option value="Stormy"></option>
+                  <option value="Snowing"></option>
+                </datalist>
             </div>
             <div>
                 <label>Location: </label>
@@ -67,3 +85,12 @@
         </form>
         <img src="pics/logo/outfishn_logo_only.png" alt="OutFishn Logo" width="250px" height="250px"/>
     </main>
+    <footer>
+        <hr />
+        <div>
+            <span class="author"> Author: </span>
+            <a href="https://github.com/cashcraft2/startup">GitHub</a>
+        </div>
+    </footer>
+  </body>
+</html>
