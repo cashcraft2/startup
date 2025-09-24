@@ -39,6 +39,22 @@ I will use these avaliable technologies to complete the following:
 - **DB** - Stores registration and login authtokens to ensure user is logged in. Stores each user's catch history, friends, and fishing plans. Must be signed in to perform these actions.
 - **WebSocket** - When a user logs a new fish, the catch will be broadcasted to each of their friends.
 
+## HTML Deliverable
+
+For this deliverable I built out all of the general HTML structure of my web application. This inclues all of the following:
+
+- [x] **HTML Pages*** - Four HTML pages: Sign In/Register, Home, Fish Log, and a Trip Planner.
+- [x] **Links** - The Sign In page contains a submit button for both the register and sign in feature. Clicking this button will transfer the user to their Home page. From the Home page, the user has the ability to select the two links listed below the user's profile picture and navigate to the Fish Log or Trip planning page. The user at any time may also decide to use the links in the header of each page to navigate between pages.
+- [x] **Text** - Text is scattered around each page used as headers, table/database information, notifications, welcome statements, or as indicators for input fields.
+- [x] **Images** - I used AI to help me create an appealing application logo with various formats. This logo is placed front and center on the sign in page as well as at the bottom of each page. A placeholder image is present for the user to eventually be able to update their profile picture. Finally, when a user logs a catch, they have the ability to submit a photo of the fish into the database.
+- [x] **DB/Sign In** - Input box and submit button for register/sign in features. Input box and submit button for adding a friend. Various forms of input along with a final submission button for both logging a fish into the database, or submitting a plan for a new trip. Leaderboard database table is displayed on Home screen for users to see the competition. Fish Log database is visible on Fish Log page to allow the user to reflect on previous catches. Trips database is visible to the user on the Trip Planner page to keep track of planned trips.
+- [x] **Websocket** - The current unorderd list on the Home page serves as a notification center. As users across the application reel in a new fish, add a friend, or plan a trip, a notofication will appear to others in real time.
+- [x] **3rd Party Services** - As users add a new catch, they have the ability to utilize Leaflet.js APIs for determining the location of the catch. This 3rd party service allows users to scroll on a mini map and place a pin on the precise location of the catch. The exact coordinates of that pin will then be saved in the database with the other inforation gathered when the fish was caught. This will help users to further analyze popular fishing trends and understand where the most effective fishing locations are. The HTML placeholder for this appears as a simple box border on the Fish log page for this deliverable. Further Leaflet CSS and JS will be integrated in later deliverables. 
+
+
+---
+
+
 ### Design Sketches
 
 <u>Register/Login Page:</u>
