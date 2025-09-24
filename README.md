@@ -39,6 +39,17 @@ I will use these avaliable technologies to complete the following:
 - **DB** - Stores registration and login authtokens to ensure user is logged in. Stores each user's catch history, friends, and fishing plans. Must be signed in to perform these actions.
 - **WebSocket** - When a user logs a new fish, the catch will be broadcasted to each of their friends.
 
+
+### Design Sketches
+
+<u>Register/Login Page:</u>
+![Login](./pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
+<u>User Dashboard:</u>
+![Dashboard](./pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
+<u>Log New Catch Page:</u>
+![Log](./pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
+
+
 ## HTML Deliverable
 
 For this deliverable I built out all of the general HTML structure of my web application. This inclues all of the following:
@@ -55,20 +66,10 @@ For this deliverable I built out all of the general HTML structure of my web app
       
 - [x] **Websocket** - The current unorderd list on the Home page serves as a notification center. As users across the application reel in a new fish, add a friend, or plan a trip, a notofication will appear to others in real time.
       
-- [x] **3rd Party Services** - As users add a new catch, they have the ability to utilize Leaflet.js APIs for determining the location of the catch. This 3rd party service allows users to scroll on a mini map and place a pin on the precise location of the catch. The exact coordinates of that pin will then be saved in the database with the other inforation gathered when the fish was caught. This will help users to further analyze popular fishing trends and understand where the most effective fishing locations are. The HTML placeholder for this appears as a simple box border on the Fish log page for this deliverable. Further Leaflet CSS and JS will be integrated in later deliverables. 
+- [x] **3rd Party Services** - As users add a new catch, they have the ability to utilize Leaflet.js APIs for determining the location of the catch. This 3rd party service allows users to scroll on a mini map and place a pin on the precise location of the catch. The exact coordinates of that pin will then be saved in the database with the other inforation gathered when the fish was caught. This will help users to further analyze popular fishing trends and understand where the most effective fishing locations are. The HTML placeholder for this appears as a simple box border on the Fish log page for this deliverable. Further Leaflet CSS and JS will be integrated in later deliverables.
 
 
 ---
-
-
-### Design Sketches
-
-<u>Register/Login Page:</u>
-![Login](./pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
-<u>User Dashboard:</u>
-![Dashboard](./pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
-<u>Log New Catch Page:</u>
-![Log](./pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
 
 
 > [!NOTE]
