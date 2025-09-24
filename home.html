@@ -24,7 +24,13 @@
 
     <main>
         <div>
-            <img src="placeholder.png" alt="Default Profile Picture" width="100" height="100">
+            <form id = "profile-picture-form">
+                <img id="profile-picture-placeholder" src="placeholder.png" alt="Profile Picture" width="150" height="150">
+                <label for="profile-picture-upload" class="upload-button">
+                    Change Profile Picture
+                </label>
+                <input type="file" id="profile-picture-upload" accept="image/*" />
+            </form>
         </div>
         <div class="user">
             Welcome,
