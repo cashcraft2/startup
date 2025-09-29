@@ -1,7 +1,7 @@
 body {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+    min-width: 360px;
 }
 
 header {
@@ -14,6 +14,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    background-color: rgb(253,253,253);
 }
 
 footer {
@@ -23,7 +24,7 @@ footer {
 menu {
     flex: 1;
     display: flex;
-    flex-direction: row !important;
+    flex-direction: row;
 }
 
 menu .nav-sign-in {
@@ -35,6 +36,74 @@ menu .nav-sign-in {
 menu .nav-sign-in:hover {
     text-decoration: none;
     color: rgb(106, 197, 176);
+}
+
+.register-sign-in {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.register-section, .sign-in-section {
+    flex: 1;
+    padding: 2em;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.register-section h1, .sign-in-section h1 {
+    font-family: Arial, sans-serif;
+    font-size: 1.8em;
+    font-weight: 600;
+    color: rgb(27,41,88);
+    margin-bottom: 0.5em;
+}
+
+.register-section span, .sign-in-section span {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    color: #666;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+.register-section div, .sign-in-section div {
+    margin-bottom: 1em;
+}
+
+.register-section input, .sign-in-section input {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    padding: 0.5em 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.register-section input:focus, .sign-in-section input:focus {
+    outline-color: rgb(106, 197, 176);
+}
+
+.register-section button, .sign-in-section button {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    padding: 0.7em 1.5em;
+    color: #fff;
+    background-color: #1b2958;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.register-section button:hover, .sign-in-section button:hover {
+    background-color: #6ac5b0;
 }
 
 
