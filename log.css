@@ -103,3 +103,128 @@ header .nav-link:hover {
     color: rgb(106, 197, 176);
 }
 
+.main-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: flex-start;
+}
+
+.left-column {
+    flex: 0 0 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 2em;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 2em;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: rgb(27, 41, 88);
+    margin: 0 0 20px 0;
+}
+
+h2 {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: rgb(27, 41, 88);
+    margin: 0 0 1em 0;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5em;
+    text-align: left;
+    width: 100%;
+}
+
+#fish-log-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#fish-log-form div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#fish-log-form label {
+    font-weight: 600;
+    color: rgb(27, 41, 88);
+}
+
+#fish-log-form input, #fish-log-form textarea, #fish-log-form datalist {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    padding: 0.5em 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+#fish-log-form input:focus, #fish-log-form textarea:focus {
+    outline: 2px solid rgb(106, 197, 176);
+    outline-offset: 1px;
+    border-color: transparent;
+}
+
+.upload-button {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    padding: 0.7em 1.5em;
+    color: #fff;
+    background-color: rgb(27, 41, 88);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    text-align: center;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.upload-button:hover {
+    background-color: rgb(106, 197, 176);
+    color: #fff;
+}
+
+#fish-photo-upload {
+    display: none;
+}
+
+#catch-photo-placeholder {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 4px solid rgb(106, 197, 176);
+    border-radius: 12px;
+    align-self: center;
+}
+
+#map {
+    border-radius: 12px;
+}
+
+
+
+
