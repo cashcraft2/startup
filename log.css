@@ -274,6 +274,73 @@ h2 {
     object-fit: contain;
 }
 
+@media (max-width: 768px) {
+    main {
+        padding: 10px 10px;
+    }
 
+    .main-content-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .left-column, .right-column {
+        flex: 1 1 auto;
+        max-width: 100%;
+        gap: 20px;
+        padding: 1.5em;
+    }
+
+    header {
+        height: auto;
+        padding: 10px;
+    }
+
+    nav {
+        width: 100%;
+        justify-content: center;
+    }
+
+    menu {
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    menu .nav-link {
+        padding: 0 0.4em;
+        font-size: 0.9em;
+    }
+
+    footer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    #catches-table {
+        font-size: 0.8em;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+    }
+
+    #catches-table th, #catches-table td {
+        padding: 8px 10px;
+    }
+
+    #catches-table th:nth-child(4), #catches-table td:nth-child(4),
+    #catches-table th:nth-child(5), #catches-table td:nth-child(5),
+    #catches-table th:nth-child(7), #catches-table td:nth-child(7),
+    #catches-table th:nth-child(8), #catches-table td:nth-child(8)  {
+        display: none;
+    }
+
+    .logo-placeholder {
+        width: 300px;
+        height: 300px;
+        bottom: 25%;
+    }
+}
 
 
