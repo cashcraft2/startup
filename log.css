@@ -192,15 +192,12 @@ h2 {
     font-weight: 600;
     padding: 0.7em 1.5em;
     color: #fff;
-    background-color: rgb(27, 41, 88);
+    background-color: rgb(27,41,88);
     border: none;
     border-radius: 25px;
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.3s;
-    text-align: center;
-    margin-top: 10px;
-    width: fit-content;
 }
 
 .upload-button:hover {
@@ -218,11 +215,55 @@ h2 {
     object-fit: cover;
     border: 4px solid rgb(106, 197, 176);
     border-radius: 12px;
-    align-self: center;
 }
 
 #map {
     border-radius: 12px;
+}
+
+#fish-log-form button {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    padding: 0.7em 1.5em;
+    color: #fff;
+    background-color: rgb(27, 41, 88);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+#fish-log-form button:hover {
+    background-color: rgb(106, 197, 176);
+}
+
+#catches-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    overflow: hidden;
+}
+
+#catches-table thead {
+    background-color: #fafafa;
+}
+
+#catches-table th, #catches-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#catches-table th {
+    font-weight: 700;
+    color: #333;
+}
+
+#catches-table tbody tr:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
 }
 
 
