@@ -186,42 +186,22 @@ h2 {
     border-color: transparent;
 }
 
-.upload-button {
-    font-family: Arial, sans-serif;
-    font-size: 1em;
-    font-weight: 600;
-    padding: 0.7em 1.5em;
-    color: #fff;
-    background-color: rgb(27,41,88);
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.upload-button:hover {
-    background-color: rgb(106, 197, 176);
-    color: #fff;
-}
-
-#fish-photo-upload {
-    display: none;
-}
-
 #catch-photo-placeholder {
     width: 150px;
     height: 150px;
     object-fit: cover;
     border: 4px solid rgb(106, 197, 176);
     border-radius: 12px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #map {
     border-radius: 12px;
 }
 
-#fish-log-form button {
+#fish-log-form button, #fish-log-form .upload-button {
     font-family: Arial, sans-serif;
     font-size: 1em;
     font-weight: 600;
@@ -235,8 +215,18 @@ h2 {
     margin-top: 10px;
 }
 
-#fish-log-form button:hover {
+#fish-log-form button:hover, #fish-log-form .upload-button:hover {
     background-color: rgb(106, 197, 176);
+    color: #fff
+}
+
+#fish-log-form .upload-button {
+    padding: 0.7em 1em;
+    display: block;
+    width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 #catches-table {
@@ -264,6 +254,24 @@ h2 {
 #catches-table tbody tr:hover {
     background-color: #f7f7f7;
     cursor: pointer;
+}
+
+.logo-placeholder {
+    position: fixed;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    opacity: 0.2;
+    pointer-events: none;
+    width: 500px;
+    height: 500px;
+}
+
+.logo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 
