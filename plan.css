@@ -209,6 +209,34 @@ h2 {
     background-color: rgb(106, 197, 176);
 }
 
+#trips-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#trips-table thead {
+    background-color: #fafafa;
+}
+
+#trips-table th, #trips-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#trips-table th {
+    font-weight: 700;
+    color: #333;
+}
+
+#trips-table tbody tr:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
 
 
 
