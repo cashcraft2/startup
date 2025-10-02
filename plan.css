@@ -152,6 +152,64 @@ h2 {
     width: 100%;
 }
 
+#trip-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#trip-form div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#trip-form label {
+    font-weight: 600;
+    color:rgb(27, 41, 88);
+}
+
+#trip-form textarea, #trip-form input {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    padding: 0.5em 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+#trip-form textarea {
+    border-radius: 12px;
+}
+
+#trip-form input:focus, #trip-form textarea:focus {
+    outline: 2px solid rgb(106, 197, 176);
+    outline-offset: 1px;
+    border-color: transparent;
+}
+
+#trip-form button {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    padding: 0.7em 1.5em;
+    color: #fff;
+    background-color: rgb(27, 41, 88);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+#trip-form button:hover {
+    color: #fff;
+    background-color: rgb(106, 197, 176);
+}
+
+
 
 
 
