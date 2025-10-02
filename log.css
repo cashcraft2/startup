@@ -329,12 +329,6 @@ h2 {
         padding: 8px 10px;
     }
 
-    #catches-table th:nth-child(4), #catches-table td:nth-child(4),
-    #catches-table th:nth-child(5), #catches-table td:nth-child(5),
-    #catches-table th:nth-child(7), #catches-table td:nth-child(7),
-    #catches-table th:nth-child(8), #catches-table td:nth-child(8)  {
-        display: none;
-    }
 
     .logo-placeholder {
         width: 300px;

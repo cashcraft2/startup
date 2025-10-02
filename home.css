@@ -350,9 +350,17 @@ menu .nav-link:hover {
         text-align: center;
     }
 
-    .leaderboard th:nth-child(3), .leaderboard td:nth-child(3) {
-        display: none;
+    .leaderboard {
+        font-size: 0.8em;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
     }
+
+    .leaderboard th, .leaderboard td {
+        padding: 8px 10px;
+    }
+
 }
 
 
