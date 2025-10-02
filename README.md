@@ -69,6 +69,22 @@ For this deliverable I built out all of the general HTML structure of my web app
 - [x] **3rd Party Services** - As users add a new catch, they have the ability to utilize Leaflet.js APIs for determining the location of the catch. This 3rd party service allows users to scroll on a mini map and place a pin on the precise location of the catch. The exact coordinates of that pin will then be saved in the database with the other inforation gathered when the fish was caught. This will help users to further analyze popular fishing trends and understand where the most effective fishing locations are. The HTML placeholder for this appears as a simple box border on the Fish log page for this deliverable. Further Leaflet CSS and JS will be integrated in later deliverables.
 
 
+## 🚀 CSS deliverable
+
+For this deliverable I built out all of the CSS styling of my web application. This inclues all of the following:
+
+- [x] **Header, footer, and main content body** - For this deliverable I made sure that across the entire application I had a consistent styling format for the header, footer, and main body. I locked the header and footer in place so that the user could easily access it from anywhere. The main body is clean, minimalist, but with a modern twist.
+      
+- [x] **Navigation elements** - In the header/footer there are consistant navigation elements such as links to the other pages or my GitHub repository. These are all styled consistently throughout. The main body has <a> tags that were styled to appear like modern buttons that change as the mouse hovers over it.
+      
+- [x] **Responsive to window resizing** - I carefully created a @media section in each of the pages to ensure that each page correctly and consistently resizes to the window size. At a window size less than 768px, the window should enter media mode and adjust its layout accordingly. I added x-scrolling features to my tables to make sure that data was not lost or cutoff when set to smaller screen sizes. 
+      
+- [x] **Application elements** - Each of the application elements were styled to be consistent with the overall application style. Image upload <input> tags were hidden but disguised as a label which was then styled to be a button. The notification center was styled to have several rows with a smaller text below each notification that indicates how long ago the notification arrived. Tables have an animation when the cursor hovers over them. Different forms of <input> tags are styled consistantly. The 3rd-party map box is styled consistant with the application.
+      
+- [x] **Application text content** - All text content was styled consistantly to have a font-family of Arial, sans-serif. All major headings/links have navy blue text color. Teal hover color is applied to all clickable features. Font sizes vary by location and purpose, but are consistant throughout pages.
+      
+- [x] **Application images** - Currently all image placeholders are styled consistantlt throughout the application. Profile picture has a modern circular border with a teal color. Fish pictures are more squared with slight radius in the corners. They also have the teal border. Images within tables remain as placeholders. Logos throughout the application are adaptable to the size of screen. Background logo added to all main pages of the application to add depth.
+
 ---
 
 
@@ -103,17 +119,6 @@ sequenceDiagram
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
-
-## 🚀 CSS deliverable
-
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
 
 ## 🚀 React part 1: Routing deliverable
 
