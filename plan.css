@@ -64,9 +64,36 @@ footer {
     background-color: #ffffff;
 }
 
+footer a {
+    color: rgb(27, 41, 88);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: rgb(106, 197, 176);
+}
+
 h1 {
     font-size: 2em;
     font-weight: 700;
     color: rgb(27, 41, 88);
     margin: 0 0 20px 0;
 }
+
+h2 {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: rgb(27, 41, 88);
+    margin: 2em 0 1em 0;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5em;
+    text-align: left;
+    width: 100%;
+}
+
+
+
+
+
+
