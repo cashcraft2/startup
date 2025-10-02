@@ -103,6 +103,37 @@ header .nav-link:hover {
     color:rgb(106, 197, 176);
 }
 
+.main-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: flex-start;
+}
+
+.left-column {
+    flex: 0 0 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 2em;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 2em;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
 h1 {
     font-size: 2em;
     font-weight: 700;
@@ -114,7 +145,7 @@ h2 {
     font-size: 1.6em;
     font-weight: 600;
     color: rgb(27, 41, 88);
-    margin: 2em 0 1em 0;
+    margin: 0em 0 1em 0;
     border-bottom: 1px solid #f0f0f0;
     padding-bottom: 0.5em;
     text-align: left;
