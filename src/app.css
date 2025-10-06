@@ -1,4 +1,4 @@
-body {
+.body { /* Used to be body{} before React */
     display: flex;
     flex-direction: column;
     min-width: 320px;
