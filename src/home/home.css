@@ -87,6 +87,7 @@ main {
     text-align: center;
     padding: 0.8em 0.8em;
     border-radius: 25px !important;
+    white-space: nowrap;
 }
 
 .add-friend-section h3 {
