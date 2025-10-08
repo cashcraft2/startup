@@ -1,4 +1,10 @@
-.body { /* Used to be body{} before React */
+.body {
+    display: flex;
+    flex-direction: column;
+    min-width: 375px;
+  }
+
+.app-container {
     display: flex;
     flex-direction: column;
     min-width: 320px;
@@ -38,7 +44,11 @@ main {
     padding: 5px 20px;
 }
 
-.outfishn-main-logo img {
+.outfishn-main-logo {
+    margin: 0 auto;
+}
+
+.outfishn-main-logo img{
     max-width: 600px;
     height: auto;
 }
@@ -79,6 +89,7 @@ menu {
     justify-content: flex-end;
     margin: 0;
     padding: 0;
+    list-style-type: none;
 }
 
 menu .nav-sign-in {
@@ -100,6 +111,8 @@ menu .nav-sign-in:hover {
     gap: 100px;
     padding-left: 20px;
     padding-right: 20px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .register-section, .sign-in-section {

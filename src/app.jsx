@@ -10,11 +10,22 @@ import { Plan } from './plan/plan';
 export default function App() {
     return (
       <BrowserRouter>
-        <div>
+        <div className="app-container">
             <header>
                 <nav>
-                    <menu className="navbar-nav">
-                        <NavLink className="nav-sign-in" to="signin">Sign In</NavLink>
+                    <menu>
+                        <li className='nav-sign-in'>
+                            <NavLink className="nav-sign-in" to="/">Sign In</NavLink>
+                        </li>
+                        <li className='nav-sign-in'>
+                            <NavLink className="nav-sign-in" to="home">Home</NavLink>
+                        </li>
+                        <li className='nav-sign-in'>
+                            <NavLink className="nav-sign-in" to="log">Fish Log</NavLink>
+                        </li>
+                        <li className='nav-sign-in'>
+                            <NavLink className="nav-sign-in" to="plan">Trip Planner</NavLink>
+                        </li>
                     </menu>
                 </nav>
             </header>
