@@ -1,4 +1,5 @@
 import React from 'react';
+import './plan.css'
 
 export function Plan() {
   return (
