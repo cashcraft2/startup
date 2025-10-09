@@ -91,7 +91,9 @@ For this deliverable I built out all of the CSS styling of my web application. T
 For this deliverable I ported my application to React. This inclues all of the following:
 
 - [x] **Bundled using Vite** - I insatlled Vite, React, and Bootsrap. I also changed the overall structure of my project to fit what Vite expects. This includes creating `public` and `src` folders. Within the `src` folder, we have our `app.jsx` and `app.cs` files, along with a folder that contains the `.jsx` and `.css` files for each of the following pages used in the application.
+
 - [x] **Components** - I sucessfully divided up the application into different components. Within the `app.jsx` file, we have a main app compnent that delegates the entire app. We then have a sub-component that allows me to create a background image for the subsequent pages. Within each of the directories for the following pages, we have main page components that dictate the `<main>` structure of the page. The `<header> and <footer>` is outlined within the `app.jsx` file's app component.
+
 - [x] **Router** - Within the `app.jsx` file, we have a main app component that drives the rest of the appication. This component also contains working routes for each of the other pages. When these pages are called by the user, the router then reaches the specific route desired and brings up the corresponding page. These routes are mainly used within the header of the pages, however in the home page, the routes are also used if the user selects the "Fish Log" or "Plan a Trip" button.
 
 ---
