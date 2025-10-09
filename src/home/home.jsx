@@ -95,9 +95,6 @@ export function Home() {
                 </div>
             </div>
         </main>
-        <div className="logo-placeholder">
-            <img src="/pics/logo/outfishn_logo_only.png" alt="OutFishin Logo"/>
-        </div>
     </>
   );
 }

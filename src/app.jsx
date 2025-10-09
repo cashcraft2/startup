@@ -1,15 +1,18 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { Signin } from './signin/signin';
 import { Home } from './home/home';
 import { Log } from './log/log';
 import { Plan } from './plan/plan';
 
-export default function App() {
+function AppContent() {
+
+    const location = useLocation();
+    const isSigninPage = location.pathname === '/';
+
     return (
-      <BrowserRouter>
         <div className="app-container">
             <header>
                 <nav>
@@ -29,7 +32,11 @@ export default function App() {
                     </menu>
                 </nav>
             </header>
-
+            {!isSigninPage && (
+                <div className="logo-placeholder">
+                    <img src="/pics/logo/outfishn_logo_only.png" alt="OutFishin Logo"/>
+                </div>
+            )}
             <Routes>
                 <Route path='/' element={<Signin />} exact />
                 <Route path='/home' element={<Home />} />
@@ -45,10 +52,17 @@ export default function App() {
                 </div>
             </footer>
         </div>
-      </BrowserRouter>
     );
-  }
+}
 
-  function NotFound() {
+export default function App() {
+    return (
+        <BrowserRouter>
+            <AppContent />
+        </BrowserRouter>
+    );
+}
+
+function NotFound() {
     return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
-  }
+}
