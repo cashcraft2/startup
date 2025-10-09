@@ -1,5 +1,6 @@
 import React from 'react';
 import './home.css';
+import { Link } from 'react-router-dom';
 
 export function Home() {
   return (
@@ -24,8 +25,8 @@ export function Home() {
                         </div>
 
                         <nav className="action-buttons">
-                            <a href="log.html" className="button action-button">Fish Log</a>
-                            <a href="plan.html" className="button action-button">Plan a Trip</a>
+                            <Link to="/log" className="button action-button">Fish Log</Link>
+                            <Link to="/plan" className="button action-button">Plan a Trip</Link>
                         </nav>
                     </div>
 

@@ -1,7 +1,19 @@
 import React from 'react';
 import './log.css';
+import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer } from 'react-leaflet';
 
 export function Log() {
+
+    const position = [40.7608, -111.8910];
+    const mapStyle = {
+      height: '250px',
+      width: '100%',
+      marginTop: '10px',
+      border: '1px solid #ccc',
+      borderRadius: '12px'
+    };
+
   return (
     <>
         <main>
@@ -55,7 +67,17 @@ export function Log() {
                             </div>
                             <div>
                                 <label>Location: </label>
-                                <div id="map"></div>
+                                <MapContainer
+                                    center={position}
+                                    zoom={8}
+                                    scrollWheelZoom={false}
+                                    style={mapStyle}
+                                >
+                                    <TileLayer
+                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+                                </MapContainer>
                                 <input type="hidden" id="latitude" name="latitude" />
                                 <input type="hidden" id="longitude" name="longitude" />
                             </div>
