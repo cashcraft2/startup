@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './log.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 
 export function Log() {
+
+    useEffect(() => {
+        document.title = 'OutFishn | Fish Log';
+    }, []);
 
     const position = [40.7608, -111.8910];
     const mapStyle = {

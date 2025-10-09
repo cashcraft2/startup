@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './plan.css'
 
 export function Plan() {
+
+    useEffect(() => {
+        document.title = 'OutFishn | Trip Planner';
+    }, []);
+
   return (
     <>
         <main>

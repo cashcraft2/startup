@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export function Signin() {
+
+    useEffect(() => {
+        document.title = 'OutFishn';
+    }, []);
+
   return (
     <main>
         <div className="outfishn-main-logo">

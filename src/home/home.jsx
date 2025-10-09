@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
 
 export function Home() {
+
+    useEffect(() => {
+        document.title = 'OutFishn | Home';
+    }, []);
+
   return (
     <>
         <main>
