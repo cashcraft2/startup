@@ -43,11 +43,11 @@ I will use these avaliable technologies to complete the following:
 ### Design Sketches
 
 <u>Register/Login Page:</u>
-![Login](./pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
+![Login](./public/pics/sketches/outfishn-rough-sketch-1.jpg "Register/Login Page")
 <u>User Dashboard:</u>
-![Dashboard](./pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
+![Dashboard](./public/pics/sketches/outfishn-rough-sketch-2.jpg "User Dashboard")
 <u>Log New Catch Page:</u>
-![Log](./pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
+![Log](./public/pics/sketches/outfishn-rough-sketch-3.jpg "Log New Catch Page")
 
 
 ## 🚀 HTML deliverable
@@ -85,6 +85,15 @@ For this deliverable I built out all of the CSS styling of my web application. T
       
 - [x] **Application images** - Currently all image placeholders are styled consistantlt throughout the application. Profile picture has a modern circular border with a teal color. Fish pictures are more squared with slight radius in the corners. They also have the teal border. Images within tables remain as placeholders. Logos throughout the application are adaptable to the size of screen. Background logo added to all main pages of the application to add depth.
 
+
+## 🚀 React part 1: Routing deliverable
+
+For this deliverable I ported my application to React. This inclues all of the following:
+
+- [x] **Bundled using Vite** - I insatlled Vite, React, and Bootsrap. I also changed the overall structure of my project to fit what Vite expects. This includes creating `public` and `src` folders. Within the `src` folder, we have our `app.jsx` and `app.cs` files, along with a folder that contains the `.jsx` and `.css` files for each of the following pages used in the application.
+- [x] **Components** - I sucessfully divided up the application into different components. Within the `app.jsx` file, we have a main app compnent that delegates the entire app. We then have a sub-component that allows me to create a background image for the subsequent pages. Within each of the directories for the following pages, we have main page components that dictate the `<main>` structure of the page. The `<header> and <footer>` is outlined within the `app.jsx` file's app component.
+- [x] **Router** - Within the `app.jsx` file, we have a main app component that drives the rest of the appication. This component also contains working routes for each of the other pages. When these pages are called by the user, the router then reaches the specific route desired and brings up the corresponding page. These routes are mainly used within the header of the pages, however in the home page, the routes are also used if the user selects the "Fish Log" or "Plan a Trip" button.
+
 ---
 
 
@@ -119,14 +128,6 @@ sequenceDiagram
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
-
-## 🚀 React part 1: Routing deliverable
-
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
 
 ## 🚀 React part 2: Reactivity deliverable
 
