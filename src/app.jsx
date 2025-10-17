@@ -6,8 +6,14 @@ import { Signin } from './signin/signin';
 import { Home } from './home/home';
 import { Log } from './log/log';
 import { Plan } from './plan/plan';
+import { AuthState } from './signin/authState';
+
 
 function AppContent() {
+
+    const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+    const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+    const [authState, setAuthState] = React.useState(currentAuthState);
 
     const location = useLocation();
     const isSigninPage = location.pathname === '/';
@@ -20,26 +26,47 @@ function AppContent() {
                         <li className='nav-sign-in'>
                             <NavLink className="nav-sign-in" to="/">Sign In</NavLink>
                         </li>
-                        <li className='nav-sign-in'>
-                            <NavLink className="nav-sign-in" to="home">Home</NavLink>
-                        </li>
-                        <li className='nav-sign-in'>
-                            <NavLink className="nav-sign-in" to="log">Fish Log</NavLink>
-                        </li>
-                        <li className='nav-sign-in'>
-                            <NavLink className="nav-sign-in" to="plan">Trip Planner</NavLink>
-                        </li>
+                        {authState === AuthState.Authenticated && (
+                            <li className='nav-sign-in'>
+                                <NavLink className="nav-sign-in" to="home">Home</NavLink>
+                            </li>
+                        )}
+                        {authState === AuthState.Authenticated && (
+                            <li className='nav-sign-in'>
+                                <NavLink className="nav-sign-in" to="log">Fish Log</NavLink>
+                            </li>
+                        )}
+                        {authState === AuthState.Authenticated && (
+                            <li className='nav-sign-in'>
+                                <NavLink className="nav-sign-in" to="plan">Trip Planner</NavLink>
+                            </li>
+                        )}
                     </menu>
                 </nav>
             </header>
+
             {!isSigninPage && (
                 <div className="logo-placeholder">
                     <img src="/pics/logo/outfishn_logo_only.png" alt="OutFishin Logo"/>
                 </div>
             )}
+
             <Routes>
-                <Route path='/' element={<Signin />} exact />
-                <Route path='/home' element={<Home />} />
+                <Route 
+                    path='/' 
+                    element={
+                        <Signin
+                            userName={userName}
+                            authState={authState}
+                            onAuthChange={(userName, authState) => {
+                                setAuthState(authState);
+                                setUserName(userName);
+                            }}
+                        />
+                    } 
+                    exact 
+                />
+                <Route path='/home' element={<Home userName={userName} />} />
                 <Route path='/log' element={<Log />} />
                 <Route path='/plan' element={<Plan />} />
                 <Route path='*' element={<NotFound />} />
