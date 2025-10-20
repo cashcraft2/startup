@@ -139,6 +139,250 @@ You nest the <img> tag inside the <a> (anchor) tag. Example:
 4. Margin (Space outside the border, separating it from other elements)
 
 
+**Given the following HTML, what CSS would you use to set the text "trouble" to green and leave the "double" text unaffected?**
+
+Example (HTML):
+`<p>double <span class="highlight">trouble</span></p>`
+
+CSS:
+```
+.highlight {
+  color: green;
+}
+```
+
+**By default, the HTML span element has a default CSS display property value of:**
+
+`inline`
+
+**What does the following code using arrow syntax function declaration do?** 
+
+Example: `const multiply = (a, b) => a * b;`
+
+Answer: It defines a function named `multiply` that takes two parameters, `a` and `b`, and returns their product. The concise arrow syntax allows the omission of `return` and curly braces for single expressions.
+
+
+**What does the following code using map with an array output?**
+
+Example: `[1, 2, 3].map(x => x * 2);`
+
+Answer: It outputs a new array where each original element has been doubled: `[2, 4, 6]`. The `map()` method creates a new array by calling a provided function on every element in the calling array.
+
+
+**What does the following code output using getElementById and addEventListener?**
+
+Example: 
+```
+document.getElementById('myButton').addEventListener('click', function() {
+  console.log('Button clicked!');
+});
+// Assume the user clicks the element with id="myButton"
+```
+
+Answer: When the element with the ID `myButton` is clicked, the console will output the string: `Button clicked!`. The `addEventListener` sets up a function to execute when a specified event (in this case, `'click'`) occurs on that element.
+
+
+**What does the following line of Javascript do using a # selector?**
+
+Example: `document.querySelector('#user-name').textContent = 'Alice';`
+
+Answer: It selects the first element in the document that has the `id` of `user-name` (using the CSS-style ID selector `#user-name`) and changes its text content to the string `Alice`.
+
+
+**What will the following code output when executed using a for loop and console.log?**
+
+Example: 
+```
+for (let i = 0; i < 3; i++) {
+  console.log(i);
+}
+```
+
+Answer: It will output the numbers 0,1, and 2, each on a new line. The loop iterates as long as i is less than 3.
+
+Output: 
+```
+0
+1
+2
+```
+
+
+**How would you use JavaScript to select an element with the id of “byu” and change the text color of that element to green?**
+
+Example/Answer:
+```
+document.getElementById('byu').style.color = 'green';
+
+// OR using querySelector:
+// document.querySelector('#byu').style.color = 'green';
+```
+
+
+**What is valid javascript syntax for if, else, for, while, switch statements?**
+
+`if (condition) { /* code */ } else { /* code */ }`
+
+`for (let i = 0; i < 5; i++) { /* code */ }`
+
+`while (condition) { /* code */ }`
+
+`switch (expression) { case value: /* code */ break; default: /* code */ }`
+
+
+**What is the correct syntax for creating a javascript object?**
+
+Example:
+```
+const person = {
+  name: "John",
+  age: 30,
+  isStudent: false
+};
+```
+
+
+**Is it possible to add new properties to javascript objects?**
+
+Yes, JavaScript objects are dynamic and properties can be added, modified, or deleted at any time after creation. Example: `person.city = "Provo";`
+
+
+**If you want to include JavaScript on an HTML page, which tag do you use?**
+
+You use the `<script>` tag.
+
+
+**Given the following HTML, what JavaScript could you use to set the text "animal" to "crow" and leave the "fish" text unaffected?**
+
+Example (HTML): 
+
+```
+<p>
+  The <span id="target-word">animal</span> is smaller than the fish.
+</p>
+```
+
+Example (JavaScript/Answer): `document.getElementById('target-word').textContent = 'crow';`
+
+
+**What will the following code using Promises output when executed?**
+
+Example: 
+```
+new Promise((resolve, reject) => {
+  resolve('First');
+})
+.then(result => {
+  console.log(result);
+  return 'Second';
+})
+.then(result => {
+  console.log(result);
+});
+console.log('Synchronous');
+```
+
+Answer: Since Promises run asynchronously (after the synchronous code stack clears), the output will be:
+```
+Synchronous
+First
+Second
+```
+
+
+**Which of the following are true? (mark all that are true about the DOM)**
+
+* The DOM (Document Object Model) is a programming interface for HTML and XML documents.
+
+* It represents the page so that programs can change the document structure, style, and content.
+
+* It represents the document as a tree of objects (nodes).
+
+
+**Which of the following correctly describes JSON?**
+
+JSON (JavaScript Object Notation) is a lightweight data-interchange format. It's easy for humans to read and write, and easy for machines to parse and generate. It is built on two structures: a collection of name/value pairs (like a JavaScript object) and an ordered list of values (like a JavaScript array).
+
+
+**Port `443`, `80`, `22` is reserved for which protocol?**
+
+* Port 443: HTTPS (Hypertext Transfer Protocol Secure)
+
+* Port 80: HTTP (Hypertext Transfer Protocol)
+
+* Port 22: SSH (Secure Shell)
+
+
+**Is a web certificate is necessary to use HTTPS.**
+
+Yes. An SSL/TLS certificate is necessary to enable HTTPS, as it provides the public key for the server to establish a secure, encrypted connection.
+
+
+**Can a DNS A record can point to an IP address or another A record.**
+
+A DNS A record can only point to an IPv4 address. It cannot point to another A record (though a CNAME record can point to another domain name).
+
+
+**Which of the following is true for the domain name `banana.fruit.bozo.click`, which is the top level domain, which is a subdomain, which is a root domain?**
+
+The root domain is the unnamed domain at the top of the hierarchy, represented by a single dot (.). The other parts are:
+
+Top Level Domain (TLD): `.click`
+
+Second Level Domain: `bozo` (i.e., `bozo.click` is the registrable domain)
+
+Subdomains: `fruit` and `banana` (i.e., `banana.fruit.bozo.click` is a full address)
+
+
+**What is the opening HTML tag for a paragraph, ordered list, unordered list, second level heading, first level heading, third level heading?** 
+
+Paragraph: `<p>`
+Ordered List: `<ol>`
+Unordered List: `<ul>`
+First Level Heading: `<h1>`
+Second Level Heading: `<h2>`
+Third Level Heading: `<h3>`
+
+
+**How do you declare the document type to be html?**
+
+Answer: `<!DOCTYPE html>`
+
+
+**What does the console command `chmod`, `pwd`, `cd`, `ls`, `vim`, `nano`, `mkdir`, `mv`, `rm`, `man`, `ssh`, `ps`, `wget`, `sudo` do?**
+
+`chmod`: Change file permissions (modes).
+`pwd`: Print Working Directory (shows the current directory path).
+`cd`:	Change Directory (navigates to a different directory).
+`ls`:	List directory contents.
+`vim`:	A powerful, command-line text editor.
+`nano`:	A simpler, user-friendly command-line text editor.
+`mkdir`:	Make Directory (creates a new directory).
+`mv`:	Move a file or directory (also used to rename).
+`rm`:	Remove (delete) files or directories.
+`man`:	Displays the manual pages for a command.
+`ssh`:	Secure Shell (creates a secure, remote shell connection).
+`ps`:	Process Status (displays currently running processes).
+`wget`:	Web Get (retrieves files from the web via HTTP, HTTPS, and FTP).
+`sudo`:	Superuser Do (executes a command with superuser/root privileges).
+
+
+**Which of the following console command creates a remote shell session?**
+`ssh`
+
+
+**Which of the following is true when the `-la` parameter is specified for the `ls` console command?**
+
+The `-la` parameter combines:
+
+* `-l` (long listing format): Displays file details including permissions, owner, size, and modification date.
+
+* `-a` (all): Lists all files, including hidden files (those starting with a dot, e.g., .bashrc).
+
+Example (Answer): It displays all files (including hidden ones) in the long listing format, showing detailed information like permissions, owner, size, and date.
+
+
+
 
 ## Caddy
 
