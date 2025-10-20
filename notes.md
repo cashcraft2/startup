@@ -52,6 +52,94 @@ Purchase your new root domain. Then follow the following steps to ensure your ro
 
 After following these steps and ensuring the verification process was finished (including email verification), I was able to type my newly created domain name into my browser and see my webpage displayed.
 
+
+## Midterm Preparation
+
+**In the following code, what does the `<link>` element do?**
+
+The `<link>` element is most commonly used to link an external CSS file to the HTML document, defining the visual style of the page. Example (Code):
+
+`<link rel="stylesheet" href="styles.css">`
+
+It tells the browser to load the styles.css file and apply the styles defined within it as the stylesheet for the current HTML document.
+
+**In the following code, what does the `<div>` tag do?**
+
+The `<div>` (division) tag is a generic container for flow content. It's used to group related elements together for styling (via CSS) or manipulation (via JavaScript). It doesn't have inherent semantic meaning. Example (Code):
+
+```
+<div class="header-group">
+  <h1>Page Title</h1>
+  <p>Subtitle</p>
+</div>
+```
+
+It creates a block-level container to logically group the h1 and p elements, making it easy to apply styles (like a specific background or layout) to the group as a whole.
+
+**In the following code, what is the difference between the `#title` and `.grid` selector?**
+
+The difference lies in what they select:
+
+*  `#title` is an ID selector. It selects the single HTML element whose `id` attribute is set to `title`. An ID must be unique on a page.
+*  `.grid` is a class selector. It selects all HTML elements whose `class` attribute includes the value `grid`. A class can be used multiple times on a single page.
+
+**In the following code, what is the difference between padding and margin?**
+
+Both create space around an element's content, but in different areas:
+
+* `padding` is the space inside the element, between the content and the element's border.
+
+* `margin` is the space outside the element's border, separating it from other elements.
+
+**Given this HTML and this CSS how will the images be displayed using flex?**
+
+Assuming the images are inside a flex container (`display: flex;`), they will be displayed as flex items. By default, this means they will be arranged side-by-side in a row, starting from the left.
+
+**What does the following padding CSS do?**
+
+Example (Code): `padding: 10px 20px 5px 15px;` 
+It sets the padding around the element. The values are applied in clockwise order starting from the top:
+
+Top padding: `10px`
+
+Right padding: `20px`
+
+Bottom padding: `5px`
+
+Left padding: `15px`
+
+**How would you use CSS to change all the div elements to have a background color of red?**
+
+You would use the element selector for the `div` tag. Example:
+
+```
+div {
+  background-color: red;
+}
+```
+
+**How would you display an image with a hyperlink in HTML?**
+
+You nest the <img> tag inside the <a> (anchor) tag. Example:
+
+```
+<a href="https://example.com/target-page">
+  <img src="my-image.jpg" alt="A descriptive image">
+</a>
+```
+
+**In the CSS box model, what is the ordering of the box layers starting at the inside and working out?**
+
+1. Content (The actual text/image)
+
+2. Padding (Space between content and border)
+
+3. Border (The line surrounding the padding)
+
+4. Margin (Space outside the border, separating it from other elements)
+
+
+
 ## Caddy
 
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
