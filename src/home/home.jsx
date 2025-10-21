@@ -88,7 +88,7 @@ export function Home({ userName }) {
                                 width="150" 
                                 height="150"
                             />
-                            <label htmlfor="profile-picture-upload" className="button">
+                            <label htmlFor="profile-picture-upload" className="button">
                                 Change Profile Picture
                             </label>
                             <input 
