@@ -5,10 +5,11 @@ import { AuthState } from './authState';
 
 
 export function Signin({ onAuthChange, AuthState }) {
-    const [signInEmail, setSignInEmail] = useState('');
+    const [signInUsername, setSignInUsername] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
 
     const [registerEmail, setRegisterEmail] = useState('');
+    const [registerUsername, setRegisterUsername] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [displayError, setDisplayError] = useState(null);
@@ -22,17 +23,17 @@ export function Signin({ onAuthChange, AuthState }) {
     async function handleSignIn(event) {
         event.preventDefault();
 
-        if (!signInEmail || !signInPassword) {
-            setDisplayError("Please enter both email and password.");
+        if (!signInUsername || !signInPassword) {
+            setDisplayError("Please enter both username and password.");
             return;
         }
 
         // **Placeholder for Sign In API call**
 
         //Simulated sign-in:
-        onAuthChange(signInEmail, AuthState.Authenticated);
+        onAuthChange(signInUsername, AuthState.Authenticated);
 
-        localStorage.setItem('userName', signInEmail);
+        localStorage.setItem('userName', signInUsername);
 
         navigate('/home');
     }
@@ -40,7 +41,7 @@ export function Signin({ onAuthChange, AuthState }) {
     async function handleRegister(event) {
         event.preventDefault();
 
-        if (!registerEmail || !registerPassword || !confirmPassword) {
+        if (!registerEmail || !registerUsername || !registerPassword || !confirmPassword) {
             setDisplayError('All fields required for registration.');
             return;
         }
@@ -53,9 +54,9 @@ export function Signin({ onAuthChange, AuthState }) {
         //**Placeholder for Register API call**
 
         //Simulated user registration:
-        onAuthChange(registerEmail, AuthState.Authenticated);
+        onAuthChange(registerUsername, AuthState.Authenticated);
 
-        localStorage.setItem('userName', registerEmail);
+        localStorage.setItem('userName', registerUsername);
 
         navigate('/home');
     }
@@ -84,6 +85,11 @@ export function Signin({ onAuthChange, AuthState }) {
                                     value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} />
                         </div>
                         <div>
+                            <span>Create Username: </span>
+                            <input type="text" placeholder='Username324'
+                                    value={registerUsername} onChange={(e) => setRegisterUsername(e.target.value)} />
+                        </div>
+                        <div>
                             <span>Password: </span>
                             <input type="password" placeholder="password"
                                     value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} />
@@ -96,19 +102,20 @@ export function Signin({ onAuthChange, AuthState }) {
                         <Button 
                             variant="primary"
                             type="submit"
-                            disabled={!registerEmail || !registerPassword || ! confirmPassword}
+                            disabled={!registerEmail || !registerUsername || !registerPassword || ! confirmPassword}
                         >
                             Register
                         </Button>
                     </form>
                 </div>
+
                 <div className="sign-in-section">
                     <h1>Sign In</h1>
                     <form onSubmit={handleSignIn}>
                         <div>
-                            <span>Email: </span>
-                            <input type="text" placeholder="your@email.com"
-                                    value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
+                            <span>Username: </span>
+                            <input type="text" placeholder="Username324"
+                                    value={signInUsername} onChange={(e) => setSignInUsername(e.target.value)} />
                         </div>
                         <div>
                             <span>Password: </span>
@@ -118,7 +125,7 @@ export function Signin({ onAuthChange, AuthState }) {
                         <Button
                             variant="primary" 
                             type="submit"
-                            disabled={!signInEmail || !signInPassword}
+                            disabled={!signInUsername || !signInPassword}
                         >
                             Sign In
                         </Button>
