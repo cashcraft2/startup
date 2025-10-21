@@ -1,10 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate  } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import { AuthState } from './authState';
+
 
 export function Signin() {
+    const [signInEmail, setSignInEmail] = useState('');
+    const [signInPassword, setSignInPassword] = useState('');
+
+    const [registerEmail, setRegisterEmail] = useState('');
+    const [registerPassword, setRegisterPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [displayError, setDisplayError] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = 'OutFishn';
     }, []);
+
+    async function handleSignIn(event) {
+        event.preventDefault();
+
+        if (!signInEmail || !signInPassword) {
+            setDisplayError("Please enter both email and password.");
+            return;
+        }
+
+        // **Placeholder for API call**
+
+        //Simulated sign-in:
+        onAuthChange(signInEmail, AuthState.Authenticated);
+
+        localStorage.setItem('userName', signInEmail);
+
+        navigate('/home');
+
+    }
 
   return (
     <main>
