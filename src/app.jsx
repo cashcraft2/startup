@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
-import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Signin } from './signin/signin';
 import { Home } from './home/home';
 import { Log } from './log/log';
@@ -10,6 +10,7 @@ import { AuthState } from './signin/authState';
 
 
 function AppContent() {
+    const navigate = useNavigate();
 
     const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
     const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
@@ -18,14 +19,30 @@ function AppContent() {
     const location = useLocation();
     const isSigninPage = location.pathname === '/';
 
+    function signout() {
+        localStorage.removeItem('userName');
+
+        setAuthState(authState.Unauthenticated);
+        setUserName('');
+
+        navigate('/');
+    }
+
     return (
         <div className="app-container">
             <header>
                 <nav>
                     <menu>
-                        <li className='nav-sign-in'>
-                            <NavLink className="nav-sign-in" to="/">Sign In</NavLink>
-                        </li>
+                        {authState !== AuthState.Authenticated && (
+                            <li className='nav-sign-in'>
+                                <NavLink className="nav-sign-in" to="/">Sign In</NavLink>
+                            </li>
+                        )}
+                        {authState === AuthState.Authenticated && (
+                            <li className='nav-sign-in'>
+                                <NavLink className="nav-sign-in" to="/" onClick={signout}>Sign Out</NavLink>
+                            </li>
+                        )}
                         {authState === AuthState.Authenticated && (
                             <li className='nav-sign-in'>
                                 <NavLink className="nav-sign-in" to="home">Home</NavLink>
