@@ -27,7 +27,7 @@ export function Signin() {
             return;
         }
 
-        // **Placeholder for API call**
+        // **Placeholder for Sign In API call**
 
         //Simulated sign-in:
         onAuthChange(signInEmail, AuthState.Authenticated);
@@ -37,47 +37,87 @@ export function Signin() {
         navigate('/home');
     }
 
-    
+    async function handleRegister(event) {
+        event.preventDefault();
 
-  return (
-    <main>
-        <div className="outfishn-main-logo">
-            <img src="/pics/logo/outfishn_cropped_logo.png" alt="OutFishn Logo"/>
-        </div>
-        <div className="register-sign-in">
-            <div className="register-section">
-                <h1>Register</h1>
-                <form method="get" action="home.html">
-                    <div>
-                        <span>Email: </span>
-                        <input type="text" placeholder="your@email.com" />
-                    </div>
-                    <div>
-                        <span>Password: </span>
-                        <input type="password" placeholder="password" />
-                    </div>
-                    <div>
-                        <span>Confirm Password: </span>
-                        <input type="password" placeholder="password" />
-                    </div>
-                    <button type="submit">Register</button>
-                </form>
+        if (!registerEmail || !registerPassword || !confirmPassword) {
+            setDisplayError('All fields required for registration.');
+            return;
+        }
+
+        if (registerPassword !== confirmPassword) {
+            setDisplayError('Passwords do not match.');
+            return;
+        }
+
+        //**Placeholder for Register API call**
+
+        //Simulated user registration:
+        onAuthChange(registerEmail, AuthState.Authenticated);
+
+        localStorage.setItem('userName', registerEmail);
+
+        navigate('/home');
+    }
+
+
+
+    return (
+        <main>
+            <div className="outfishn-main-logo">
+                <img src="/pics/logo/outfishn_cropped_logo.png" alt="OutFishn Logo"/>
             </div>
-            <div className="sign-in-section">
-                <h1>Sign In</h1>
-                <form method="get" action="home.html">
-                    <div>
-                        <span>Email: </span>
-                        <input type="text" placeholder="your@email.com" />
-                    </div>
-                    <div>
-                        <span>Password: </span>
-                        <input type="password" placeholder="password" />
-                    </div>
-                    <button type="submit">Sign In</button>
-                </form>
+            <div className="register-sign-in">
+                <div className="register-section">
+                    <h1>Register</h1>
+                    <form onSubmit={handleRegister}>
+                        <div>
+                            <span>Email: </span>
+                            <input type="text" placeholder="your@email.com"
+                                    value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} />
+                        </div>
+                        <div>
+                            <span>Password: </span>
+                            <input type="password" placeholder="password"
+                                    value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} />
+                        </div>
+                        <div>
+                            <span>Confirm Password: </span>
+                            <input type="password" placeholder="password"
+                                    value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        </div>
+                        <Button 
+                            variant="primary"
+                            type="submit"
+                            disabled={!registerEmail || !registerPassword || ! confirmPassword}
+                        >
+                            Register
+                        </Button>
+                    </form>
+                </div>
+                <div className="sign-in-section">
+                    <h1>Sign In</h1>
+                    <form onSubmit={handleSignIn}>
+                        <div>
+                            <span>Email: </span>
+                            <input type="text" placeholder="your@email.com"
+                                    value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
+                        </div>
+                        <div>
+                            <span>Password: </span>
+                            <input type="password" placeholder="password"
+                                    value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} />
+                        </div>
+                        <Button
+                            variant="primary" 
+                            type="submit"
+                            disabled={!signInEmail || !signInPassword}
+                        >
+                            Sign In
+                        </Button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </main>
-  );
+        </main>
+    );
 }
