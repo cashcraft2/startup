@@ -60,6 +60,18 @@ export function Home({ userName }) {
         setFriendEmial('');
     };
 
+    const handleProfilePictureChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfilePicture(reader.result);
+                localStorage.setItem(`${userName}-profile-pic`, reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
   return (
     <>
         <main>
