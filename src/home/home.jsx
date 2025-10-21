@@ -21,11 +21,44 @@ const MOCK_NOTIFICATIONS = [
     { id: 3, message: 'Peter Jones added a new catch', timestamp: '15 minutes ago' },
 ];
 
-export function Home() {
+const getLocalData = (key, defaultValue) => {
+    try {
+        const value = localStorage.getItem(key);
+        return value ? JSON.parse(value) : defaultValue;
+    } catch (e) {
+        console.error("Error reading from local storage", e);
+        return defaultValue;
+    }
+};
 
+export function Home({ userName }) {
+    const [friendEmail, setFriendEmial] = useState('');
+    const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+    const [profilePicture, setProfilePicture] = useState(
+        localStorage.getItem(`${userName}-profile-pic`) || '/placeholder.png'
+    );
+    
     useEffect(() => {
         document.title = 'OutFishn | Home';
     }, []);
+
+    const handleFriendSubmit = (event) => {
+        event.preventDefault();
+        if (!friendEmail.trim) {
+            alert("Please enter a friend's email.");
+            return;
+        }
+
+        const newNotification = {
+            id: Date.now(),
+            message: `Friend request sent to ${friendEmail.trim()}. (MOCKED)`,
+            timestamp: 'Just now',
+        };
+
+        setNotifications([newNotification, ...notifications]);
+        alert(`MOCK: Friend request sent to ${friendEmail.trim()}!`);
+        setFriendEmial('');
+    };
 
   return (
     <>
