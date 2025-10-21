@@ -1,6 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
+
+const MOCK_LEADERBOARD = [
+    { rank: 1, angler: 'John Doe', species: 'Largemouth Bass', weight: 16.3 },
+    { rank: 2, angler: 'Jane Doe', species: 'Largemouth Bass', weight: 15.1 },
+    { rank: 3, angler: 'Peter Jones', species: 'Rainbow Trout', weight: 14.8 },
+    { rank: 4, angler: 'Mike Jensen', species: 'Rainbow Trout', weight: 14.3 },
+    { rank: 5, angler: 'Josh Holmes', species: 'Striped Bass', weight: 12.9 },
+    { rank: 6, angler: 'Daman Rodriguez', species: 'Brown Trout', weight: 12.6 },
+    { rank: 7, angler: 'Nick Brown', species: 'Rainbow Trout', weight: 10.8 },
+    { rank: 8, angler: 'Mike Jensen', species: 'Channel Catfish', weight: 8.7 },
+    { rank: 9, angler: 'John Doe', species: 'Smallmouth Bass', weight: 8.6 },
+    { rank: 10, angler: 'Josh Holmes', species: 'Striped Bass', weight: 7.5 },
+];
+
+const MOCK_NOTIFICATIONS = [
+    { id: 1, message: 'John Doe is now rank #1 in the leaderboard!', timestamp: '2 minutes ago' },
+    { id: 2, message: 'You added Mike Jensen as a friend', timestamp: '5 minutes ago' },
+    { id: 3, message: 'Peter Jones added a new catch', timestamp: '15 minutes ago' },
+];
 
 export function Home() {
 
