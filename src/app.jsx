@@ -56,8 +56,7 @@ function AppContent() {
                     path='/' 
                     element={
                         <Signin
-                            userName={userName}
-                            authState={authState}
+                            AuthState={AuthState}
                             onAuthChange={(userName, authState) => {
                                 setAuthState(authState);
                                 setUserName(userName);

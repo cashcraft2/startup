@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { AuthState } from './authState';
 
 
-export function Signin() {
+export function Signin({ onAuthChange, AuthState }) {
     const [signInEmail, setSignInEmail] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
 
@@ -67,6 +67,13 @@ export function Signin() {
             <div className="outfishn-main-logo">
                 <img src="/pics/logo/outfishn_cropped_logo.png" alt="OutFishn Logo"/>
             </div>
+
+            {displayError && (
+                <div className='alert alert-problem' role='alert'>
+                    {displayError}
+                </div>
+            )}
+
             <div className="register-sign-in">
                 <div className="register-section">
                     <h1>Register</h1>
