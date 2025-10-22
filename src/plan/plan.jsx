@@ -77,28 +77,28 @@ export function Plan({ userName }) {
             <div className="main-content-wrapper">
                 <div className="left-column">
                     <h1>Plan A Trip</h1>
-                    <form id="trip-form">
+                    <form onSubmit={handleTripSubmit}>
                         <div>
-                            <label for="trip-name">Trip Name: </label>
-                            <input type="text" id="trip-name" placeholder="ex. The Boy's Trip" />
+                            <label htmlFor="trip-name">Trip Name: </label>
+                            <input type="text" id="trip-name" placeholder="ex. The Boy's Trip" value={tripName} onChange={(e) => setTripName(e.target.value)} />
                         </div>
                         <div>
-                            <label for="trip-location">Location: </label>
-                            <input type="text" id="trip-location" placeholder="Strawberry Reservoir" />
+                            <label htmlFor="trip-location">Location: </label>
+                            <input type="text" id="trip-location" placeholder="Strawberry Reservoir" value={tripLocation} onChange={(e) => setTripLocation(e.target.value)} />
                         </div>
                         <div>
-                            <label for="trip-date">Date: </label>
-                            <input type="date" id="trip-date" name="trip-date" />
+                            <label htmlFor="trip-date">Date: </label>
+                            <input type="date" id="trip-date" name="trip-date" value={tripDate} onChange={(e) => setTripDate(e.target.value)} />
                         </div>
                         <div>
-                            <label for="trip-guests">Friends: </label>
-                            <textarea id="trip-guests" name="trip-guests" rows="3" placeholder="List who you'd like to tag along here..."></textarea>
+                            <label htmlFor="trip-guests">Friends: </label>
+                            <textarea id="trip-guests" name="trip-guests" rows="3" placeholder="List who you'd like to tag along here..." value={tripGuests} onChange={(e) => setTripGuests(e.target.value)}></textarea>
                         </div>
                         <div>
-                            <label for="trip-notes">Notes: </label>
-                            <textarea id="trip-notes" name="trip-notes" rows="5" placeholder="Other important trip information..."></textarea>
+                            <label htmlFor="trip-notes">Notes: </label>
+                            <textarea id="trip-notes" name="trip-notes" rows="5" placeholder="Other important trip information..." value={tripNotes} onChange={(e) => setTripNotes(e.target.value)}></textarea>
                         </div>
-                        <button type="submit">Plan Trip</button>
+                        <button type="submit" disabled={!tripName || !tripLocation || !tripDate}>Plan Trip</button>
                     </form>
                 </div>
                 <div className="right-column">
@@ -111,23 +111,31 @@ export function Plan({ userName }) {
                                 <th>Date</th>
                                 <th>Friends</th>
                                 <th>Notes</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Boy's Trip</td>
-                                <td>Strawberry Reservoir</td>
-                                <td>10/18/2025</td>
-                                <td>Jack Mann, John Doe, Jake Smith</td>
-                                <td>Jake is driving. Meet at Walmart</td>
-                            </tr>
-                            <tr>
-                                <td>Family Trip</td>
-                                <td>Silver Lake</td>
-                                <td>10/26/2025</td>
-                                <td>Invite all family.</td>
-                                <td>Bring extra layers. It'll be cold.</td>
-                            </tr>
+                            {trips.map((trip) => (
+                                <tr key={trip.id}>
+                                    <td>{trip.name}</td>
+                                    <td>{trip.location}</td>
+                                    <td>{formatDate(trip.date)}</td>
+                                    <td>{trip.guests || 'None'}</td>
+                                    <td>{trip.notes}</td>
+                                    <td>
+                                        <button 
+                                            onClick={() => handleDeleteTrip(trip.id)} 
+                                            className="delete-button"
+                                            title="Delete Trip"
+                                        >
+                                            🗑️
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {trips.length === 0 && (
+                                <tr><td colSpan="6" style={{textAlign: 'center'}}>No trips planned yet. Time to plan one!</td></tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

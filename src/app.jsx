@@ -117,7 +117,7 @@ function AppContent() {
                 />
                 <Route path='/home' element={<Home userName={userName} leaderboard={leaderboard} />} />
                 <Route path='/log' element={<Log userName={userName} catches={allCatches} onCatchLogged={handleNewCatch} />} />
-                <Route path='/plan' element={<Plan />} />
+                <Route path='/plan' element={<Plan userName={userName}/>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 
