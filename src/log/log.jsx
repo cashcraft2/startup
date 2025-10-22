@@ -1,15 +1,47 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './log.css';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import L from 'leaflet';
 
-export function Log() {
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
+
+function LocationMarker({ setLocation }) {
+    const [position, setPosition] = useState(null);
+    useMapEvents({
+        click(e) {
+            setPosition(e.latlng);
+            setLocation({ lat: e.latlng.lat, lng: e.latlng.lng});
+        },
+    });
+
+    return position === null ? null : (
+        <Marker position={position} />
+    );
+}
+
+export function Log({ onCatchLogged, catches, userName }) {
+    const [species, setSpecies] = useState('');
+    const [length, setLength] = useState('');
+    const [weight, setWeight] = useState('');
+    const [bait, setBait] = useState('');
+    const [catchTime, setCatchTime] = useState('');
+    const [airTemp, setAirTemp] = useState('');
+    const [skyConditions, setSkyConditions] = useState('');
+    const [notes, setNotes] = useState('');
+    const [location, setLocation] = useState({ lat: 40.7608, lng: -111.8910 });
+    const [photo, setPhoto] = useState(null);
 
     useEffect(() => {
         document.title = 'OutFishn | Fish Log';
     }, []);
 
-    const position = [40.7608, -111.8910];
+    const position = [location.lat, location.lng];
     const mapStyle = {
       height: '250px',
       width: '100%',
@@ -17,6 +49,45 @@ export function Log() {
       border: '1px solid #ccc',
       borderRadius: '12px'
     };
+
+    const handleCatchSubmit = (event) => {
+        event.preventDefault();
+
+        if (!species || !weight || !length) {
+            alert('Please fill out Species, Length, and Weight');
+            return;
+        }
+
+        const newCatch = {
+            id: Date.now(),
+            photo: photo,
+            species: species.trim(),
+            length: parseFloat(length),
+            weight: parseFloat(weight),
+            bait: bait.trim(),
+            catchTime: catchTime || new Date().toISOString().slice(0,16),
+            airTemp: airTemp ? parseFloat(airTemp) : null,
+            skyConditions: skyConditions.trim(),
+            location: location,
+            notes: notes.trim(),
+            angler: userName,
+        };
+
+        onCatchLogged(newCatch);
+
+        setSpecies('');
+        setLength('');
+        setWeight('');
+        setBait('');
+        setCatchTime('');
+        setAirTemp('');
+        setSkyConditions('');
+        setNotes('');
+        setPhoto(null);
+        alert('Catch successfully logged!');
+    };
+
+    
 
   return (
     <>

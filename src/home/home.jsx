@@ -101,8 +101,8 @@ export function Home({ userName }) {
                         </form>
 
                         <div className="user">
-                            Welcome,
-                            <span className="username">{userName}</span>
+                            Welcome, 
+                            <span className="username"> {userName}</span>
                         </div>
 
                         <nav className="action-buttons">
