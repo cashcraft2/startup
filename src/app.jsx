@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 import { BrowserRouter, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -9,6 +9,24 @@ import { Plan } from './plan/plan';
 import { AuthState } from './signin/authState';
 
 
+const initialCatches = [
+    { id: 101, photo: null, species: 'Largemouth Bass', length: 12.4, weight: 10.9, bait: 'None', catchTime: '2025-09-08T05:33', airTemp: 62.7, skyConditions: 'Partly Cloudy', location: {lat: 40, lng: -110}, notes: 'Early bird gets the worm.', angler: 'Jane Doe' },
+    { id: 102, photo: null, species: 'Rainbow Trout', length: 10.8, weight: 9.6, bait: 'Power Bait', catchTime: '2025-09-23T16:33', airTemp: 65.8, skyConditions: 'Sunny', location: {lat: 41, lng: -112}, notes: 'Caught on East side of the reservoir.', angler: 'Mike Jensen' },
+];
+
+const calculateLeaderboard = (allCatches) => {
+    const sortedCatches = [...allCatches].sort((a, b) => b.weight - a.weight);
+
+    const leaderboard = sortedCatches.map((catchItem, index) => ({
+        rank: index + 1,
+        angler: catchItem.angler,
+        species: catchItem.species,
+        weight: catchItem.weight,
+    }));
+
+    return leaderboard.slice(0, 10);
+};
+
 function AppContent() {
     const navigate = useNavigate();
 
@@ -18,6 +36,21 @@ function AppContent() {
 
     const location = useLocation();
     const isSigninPage = location.pathname === '/';
+
+    const [allCatches, setAllCatches] = useState(
+        JSON.parse(localStorage.getItem('fishLog')) || initialCatches
+    );
+
+    const leaderboard = calculateLeaderboard(allCatches);
+
+    useEffect(() => {
+        localStorage.setItem('fishLog', JSON.stringify(allCatches));
+
+    }, [allCatches]);
+
+    const handleNewCatch = useCallback((newCatch) => {
+        setAllCatches(prevCatches => [newCatch, ...prevCatches]);
+    }, []);
 
     function signout() {
         localStorage.removeItem('userName');
@@ -82,8 +115,8 @@ function AppContent() {
                     } 
                     exact 
                 />
-                <Route path='/home' element={<Home userName={userName} />} />
-                <Route path='/log' element={<Log />} />
+                <Route path='/home' element={<Home userName={userName} leaderboard={leaderboard} />} />
+                <Route path='/log' element={<Log userName={userName} catches={allCatches} onCatchLogged={handleNewCatch} />} />
                 <Route path='/plan' element={<Plan />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
