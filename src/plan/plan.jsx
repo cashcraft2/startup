@@ -1,11 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './plan.css'
 
-export function Plan() {
+const initialTrips = [
+    { id: 1, name: "Boy's Trip", location: "Strawberry Reservoir", date: "2025-10-18", guests: "Jack Mann, John Doe, Jake Smith", notes: "Jake is driving. Meet at Walmart" },
+    { id: 2, name: "Family Trip", location: "Silver Lake", date: "2025-10-26", guests: "Invite all family.", notes: "Bring extra layers. It'll be cold." },
+];
+
+const TRIP_STORAGE_KEY = 'fishingTrips';
+
+export function Plan({ userName }) {
+    const [tripName, setTripName] = useState('');
+    const [tripLocation, setTripLocation] = useState('');
+    const [tripDate, setTripDate] = useState('');
+    const [tripGuests, setTripGuests] = useState('');
+    const [tripNotes, setTripNotes] = useState('');
+
+    const [trips, setTrips] = useState(() => {
+        try {
+            const savedTrips = localStorage.getItem(`${userName}-${TRIP_STORAGE_KEY}`);
+            return savedTrips ? JSON.parse(savedTrips) : initialTrips;
+        } catch (e) {
+            console.error("Could not load trips from Local Storage: ", e);
+            return initialTrips;
+        }
+    });
 
     useEffect(() => {
         document.title = 'OutFishn | Trip Planner';
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem(`${userName}-${TRIP_STORAGE_KEY}`, JSON.stringify(trips));
+    }, [trips, userName]);
+
+    const formatDate = (isoString) => {
+        if (!isoString) return '';
+        const [year, month, day] = isoString.split('-');
+        return `${month}/${day}/${year}`;
+    };
 
   return (
     <>
