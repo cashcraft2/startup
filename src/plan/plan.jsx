@@ -39,6 +39,38 @@ export function Plan({ userName }) {
         return `${month}/${day}/${year}`;
     };
 
+    const handleTripSubmit = (event) => {
+        event.preventDefault();
+
+        if (!tripName || !tripLocation || !tripDate) {
+            alert("Trip name, location, and date required.");
+            return;
+        }
+
+        const newTrip = {
+            id: Date.now(),
+            name: tripName.trim(),
+            location: tripLocation.trim(),
+            date: tripDate,
+            guests: tripGuests.trim(),
+            notes: tripNotes.trim(),
+        };
+
+        setTrips(prevTrips => [newTrip, ...prevTrips]);
+
+        setTripName('');
+        setTripLocation('');
+        setTripDate('');
+        setTripGuests('');
+        setTripNotes('');
+    };
+
+    const handleDeleteTrip = (id) => {
+        if (window.confirm("Are you sure you want to delete this trip?")) {
+            setTrips(prevTrips => prevTrips.filter(trip => trip.id !== id));
+        }
+    };
+
   return (
     <>
         <main>
