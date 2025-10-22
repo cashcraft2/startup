@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 import { BrowserRouter, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -55,7 +55,7 @@ function AppContent() {
     function signout() {
         localStorage.removeItem('userName');
 
-        setAuthState(authState.Unauthenticated);
+        setAuthState(AuthState.Unauthenticated);
         setUserName('');
 
         navigate('/');

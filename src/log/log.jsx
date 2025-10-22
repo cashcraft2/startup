@@ -211,6 +211,7 @@ export function Log({ onCatchLogged, catches, userName }) {
                                     <td>{formatDate(catchItem.catchTime)}</td>
                                     <td>{catchItem.airTemp !== null ? catchItem.airTemp.toFixed(1) : 'N/A'}</td>
                                     <td>{catchItem.skyConditions}</td>
+                                    <td>{`Lat: ${catchItem.location.lat.toFixed(4)}, Lng: ${catchItem.location.lng.toFixed(4)}`}</td>
                                     <td>{catchItem.notes}</td>
                                 </tr>
                             ))}
