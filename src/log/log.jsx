@@ -87,7 +87,21 @@ export function Log({ onCatchLogged, catches, userName }) {
         alert('Catch successfully logged!');
     };
 
-    
+    const handlePhotoChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPhoto(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return date.toLocaleDateString() + ', ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
 
   return (
     <>
