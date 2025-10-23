@@ -14,6 +14,10 @@ const initialCatches = [
     { id: 102, photo: null, species: 'Rainbow Trout', length: 10.8, weight: 9.6, bait: 'Power Bait', catchTime: '2025-09-23T16:33', airTemp: 65.8, skyConditions: 'Sunny', location: {lat: 41, lng: -112}, notes: 'Caught on East side of the reservoir.', angler: 'Mike Jensen' },
 ];
 
+const initialNotifications = [
+    {id: 1, message: "Welcome to OutFishn! Start logging your catches.", timestamp: new Date().toISOString()},
+];
+
 const calculateLeaderboard = (allCatches) => {
     const sortedCatches = [...allCatches].sort((a, b) => b.weight - a.weight);
 
@@ -43,13 +47,40 @@ function AppContent() {
 
     const leaderboard = calculateLeaderboard(allCatches);
 
+    const [notifications, setNotifications] = useState(
+        JSON.parse(localStorage.getItem('appNotifications')) || initialNotifications
+    );
+
+    useEffect(() => {
+        localStorage.setItem('appNotifications', JSON.stringify(notifications));
+    }, [notifications]);
+
     useEffect(() => {
         localStorage.setItem('fishLog', JSON.stringify(allCatches));
 
     }, [allCatches]);
 
     const handleNewCatch = useCallback((newCatch) => {
-        setAllCatches(prevCatches => [newCatch, ...prevCatches]);
+        setAllCatches(prevCatches => {
+            const updatedCatches = [newCatch, ...prevCatches];
+            const currentLeaderboard = calculateLeaderboard(updatedCatches);
+            const madeLeaderboard = currentLeaderboard.some(item => 
+                item.angler === newCatch.angler && item.weight === newCatch.weight
+            );
+
+            if(madeLeaderboard) {
+                const rank = currentLeaderboard.findIndex(item => item.weight === newCatch.weight) + 1;
+                const notification = {
+                    id: Date.now() + 1,
+                    message: `${newCatch.angler}'s new catch is now rank #${rank} in the leaderboard! 🏆`,
+                    timestamp: new Date().toISOString(),
+                };
+
+                setNotifications(prevNotifs => [notification, ...prevNotifs]);
+            }
+
+            return updatedCatches;
+        });
     }, []);
 
     function signout() {
@@ -115,7 +146,15 @@ function AppContent() {
                     } 
                     exact 
                 />
-                <Route path='/home' element={<Home userName={userName} leaderboard={leaderboard} />} />
+                <Route
+                    path='/home' 
+                    element={<Home 
+                        userName={userName} 
+                        leaderboard={leaderboard}
+                        notifications={notifications}
+                        setNotifications={setNotifications}
+                    />} 
+                />
                 <Route path='/log' element={<Log userName={userName} catches={allCatches} onCatchLogged={handleNewCatch} />} />
                 <Route path='/plan' element={<Plan userName={userName}/>} />
                 <Route path='*' element={<NotFound />} />
