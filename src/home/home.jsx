@@ -2,25 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
 
-const MOCK_NOTIFICATIONS = [
-    { id: 1, message: 'John Doe is now rank #1 in the leaderboard!', timestamp: '2 minutes ago' },
-    { id: 2, message: 'You added Mike Jensen as a friend', timestamp: '5 minutes ago' },
-    { id: 3, message: 'Peter Jones added a new catch', timestamp: '15 minutes ago' },
-];
-
-const getLocalData = (key, defaultValue) => {
-    try {
-        const value = localStorage.getItem(key);
-        return value ? JSON.parse(value) : defaultValue;
-    } catch (e) {
-        console.error("Error reading from local storage", e);
-        return defaultValue;
-    }
-};
-
-export function Home({ userName, leaderboard }) {
+export function Home({ userName, leaderboard, notifications, setNotifications }) {
     const [friendEmail, setFriendEmial] = useState('');
-    const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
     const [profilePicture, setProfilePicture] = useState(
         localStorage.getItem(`${userName}-profile-pic`) || '/placeholder.png'
     );
@@ -31,20 +14,31 @@ export function Home({ userName, leaderboard }) {
 
     const handleFriendSubmit = (event) => {
         event.preventDefault();
-        if (!friendEmail.trim) {
+        if (!friendEmail || friendEmail.trim().length === 0) {
             alert("Please enter a friend's email.");
             return;
         }
 
         const newNotification = {
             id: Date.now(),
-            message: `Friend request sent to ${friendEmail.trim()}. (MOCKED)`,
-            timestamp: 'Just now',
+            message: `Friend request sent to ${friendEmail.trim()} (MOCKED)`,
+            timestamp: new Date().toISOString(),
         };
 
         setNotifications([newNotification, ...notifications]);
         alert(`MOCK: Friend request sent to ${friendEmail.trim()}!`);
         setFriendEmial('');
+    };
+
+    const formatTimestamp = (isoString) => {
+        const date = new Date(isoString);
+        const now = new Date();
+        const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+        
+        if (diffInMinutes < 1) return 'Just now';
+        if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} hours ago`;
+        return date.toLocaleDateString();
     };
 
     const handleProfilePictureChange = (event) => {
@@ -148,7 +142,7 @@ export function Home({ userName, leaderboard }) {
                                 <li key={item.id} className='notification-item'>
                                     <div className='notification-content'>
                                         <p>{item.message}</p>
-                                        <span className='timestamp'>{item.timestamp}</span>
+                                        <span className='timestamp'>{formatTimestamp(item.timestamp)}</span>
                                     </div>
                                 </li>
                             ))}
