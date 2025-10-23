@@ -77,29 +77,31 @@ export function Plan({ userName }) {
             <div className="main-content-wrapper">
                 <div className="left-column">
                     <h1>Plan A Trip</h1>
-                    <form onSubmit={handleTripSubmit}>
-                        <div>
-                            <label htmlFor="trip-name">Trip Name: </label>
-                            <input type="text" id="trip-name" placeholder="ex. The Boy's Trip" value={tripName} onChange={(e) => setTripName(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="trip-location">Location: </label>
-                            <input type="text" id="trip-location" placeholder="Strawberry Reservoir" value={tripLocation} onChange={(e) => setTripLocation(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="trip-date">Date: </label>
-                            <input type="date" id="trip-date" name="trip-date" value={tripDate} onChange={(e) => setTripDate(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="trip-guests">Friends: </label>
-                            <textarea id="trip-guests" name="trip-guests" rows="3" placeholder="List who you'd like to tag along here..." value={tripGuests} onChange={(e) => setTripGuests(e.target.value)}></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="trip-notes">Notes: </label>
-                            <textarea id="trip-notes" name="trip-notes" rows="5" placeholder="Other important trip information..." value={tripNotes} onChange={(e) => setTripNotes(e.target.value)}></textarea>
-                        </div>
-                        <button type="submit" disabled={!tripName || !tripLocation || !tripDate}>Plan Trip</button>
-                    </form>
+                    <div className="trip-plan-section box-shadow-style">
+                        <form onSubmit={handleTripSubmit} id="trip-form">
+                            <div>
+                                <label htmlFor="trip-name">Trip Name: </label>
+                                <input type="text" id="trip-name" placeholder="ex. The Boy's Trip" value={tripName} onChange={(e) => setTripName(e.target.value)} />
+                            </div>
+                            <div>
+                                <label htmlFor="trip-location">Location: </label>
+                                <input type="text" id="trip-location" placeholder="Strawberry Reservoir" value={tripLocation} onChange={(e) => setTripLocation(e.target.value)} />
+                            </div>
+                            <div>
+                                <label htmlFor="trip-date">Date: </label>
+                                <input type="date" id="trip-date" name="trip-date" value={tripDate} onChange={(e) => setTripDate(e.target.value)} />
+                            </div>
+                            <div>
+                                <label htmlFor="trip-guests">Friends: </label>
+                                <textarea id="trip-guests" name="trip-guests" rows="3" placeholder="List who you'd like to tag along here..." value={tripGuests} onChange={(e) => setTripGuests(e.target.value)}></textarea>
+                            </div>
+                            <div>
+                                <label htmlFor="trip-notes">Notes: </label>
+                                <textarea id="trip-notes" name="trip-notes" rows="5" placeholder="Other important trip information..." value={tripNotes} onChange={(e) => setTripNotes(e.target.value)}></textarea>
+                            </div>
+                            <button type="submit" disabled={!tripName || !tripLocation || !tripDate}>Plan Trip</button>
+                        </form>
+                    </div>
                 </div>
                 <div className="right-column">
                     <h2>My Trips</h2>
