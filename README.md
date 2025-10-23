@@ -96,6 +96,23 @@ For this deliverable I ported my application to React. This inclues all of the f
 
 - [x] **Router** - Within the `app.jsx` file, we have a main app component that drives the rest of the appication. This component also contains working routes for each of the other pages. When these pages are called by the user, the router then reaches the specific route desired and brings up the corresponding page. These routes are mainly used within the header of the pages, however in the home page, the routes are also used if the user selects the "Fish Log" or "Plan a Trip" button.
 
+
+## 🚀 React part 2: Reactivity deliverable
+
+For this deliverable I created full functionality and MOCK functionality for different aspects of the Web App. I checked the box `[x]` and added a description for things I completed.
+
+- [x] **All functionality implemented or mocked out** - I completed this deliverable by using React state and props for reactivity. All backend interactions (user management, logging catches, planning trips, friend requests, and leaderboard ranking) were mocked using the browser's `localStorage` API to ensure data persistence across sessions without a database. New data (like logged fish and planned trips) dynamically updates the UI upon submission.
+
+- [x] **Hooks** - I completed this deliverable by utilizing several essential React Hooks across the application:
+
+* `useState` was used for managing all local component data, including form inputs (e.g., email, password) and dynamic content (e.g., notifications, profile picture).
+
+* `useEffect` was used for two primary purposes: managing side effects like setting the page title (`document.title`), and syncing local component state (like the `allCatches` and `trips` arrays) with `localStorage` for mocking data persistence.
+
+* `useCallback` was used to create the `handleNewCatch` function, preventing unnecessary re-creation and ensuring function identity remains stable when passed down to its children.
+
+* `useNavigate` and `useLocation` were used to manage the application's routing, enabling immediate page redirection after successful authentication and updating the header based on the current page.
+
 ---
 
 
@@ -130,13 +147,6 @@ sequenceDiagram
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
-
-## 🚀 React part 2: Reactivity deliverable
-
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
 
 ## 🚀 Service deliverable
 
