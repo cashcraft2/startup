@@ -19,3 +19,13 @@ app.use(express.static('public'));
 
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
+
+
+// Application endpoints
+app.get('*', (_req, res) => {
+    res.send({ msg: 'Simon service' });
+  });
+  
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
