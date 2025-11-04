@@ -83,13 +83,31 @@ function AppContent() {
         });
     }, []);
 
-    function signout() {
-        localStorage.removeItem('userName');
+    async function signout() {
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: DELETE,
+            });
 
-        setAuthState(AuthState.Unauthenticated);
-        setUserName('');
-
-        navigate('/');
+            if (response.status == 204) {
+                localStorage.removeItem('userName');
+                setAuthState(AuthState.Unauthenticated);
+                setUserName('');
+                navigate('/');
+            } else {
+                console.error('Logout failed on server but state reset anyway.');
+                localStorage.removeItem('userName');
+                setAuthState(AuthState.Unauthenticated);
+                setUserName('');
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Network error during logout: ', error);
+            localStorage.removeItem('userName');
+            setAuthState(AuthState.Unauthenticated);
+            setUserName('');
+            navigate('/');
+        }
     }
 
     return (
