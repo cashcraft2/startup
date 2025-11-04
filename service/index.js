@@ -26,19 +26,33 @@ apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('email', req.body.email)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
-        const user = await createUser(req.body.email, req.body.password);
+        const user = await createUser(req.body.email, req.body.password, req.body.username);
 
         setAuthCookie(res, user.token);
         res.send({ email: user.email });
     }
 });
 
-async function createUser(email, password) {
+apiRouter.post('/auth/login', async (req, res) => {
+    const user = await findUser('email', req.body.email);
+    if (user) {
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            user.token = uuid.v4();
+            setAuthCookie(res, user.token);
+            res.send({ email: user.email });
+            return;
+        }
+    }
+    res.status(401).send({ msg: 'Unauthorized' });
+});
+
+async function createUser(email, password, username) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = {
         email: email,
         password: passwordHash,
+        username: username,
         token: uuid.v4(),
     };
 
