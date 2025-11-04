@@ -22,9 +22,45 @@ app.use(`/api`, apiRouter);
 
 
 // Application endpoints
-app.get('*', (_req, res) => {
-    res.send({ msg: 'Simon service' });
-  });
+apiRouter.post('/auth/create', async (req, res) => {
+    if (await findUser('email', req.body.email)) {
+        res.status(409).send({ msg: 'Existing user' });
+    } else {
+        const user = await createUser(req.body.email, req.body.password);
+
+        setAuthCookie(res, user.token);
+        res.send({ email: user.email });
+    }
+});
+
+async function createUser(email, password) {
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = {
+        email: email,
+        password: passwordHash,
+        token: uuid.v4(),
+    };
+
+    users.push(user);
+
+    return user;
+}
+
+async function findUser(field, value) {
+    if (!value) return null;
+
+    return users.find((u) => u[field] === value);
+}
+
+function setAuthCookie(res, authToken) {
+    res.cookie(authCookieName, authToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
+    });
+}
   
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
