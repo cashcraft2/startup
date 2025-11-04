@@ -28,14 +28,31 @@ export function Signin({ onAuthChange, AuthState }) {
             return;
         }
 
-        // **Placeholder for Sign In API call**
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: signInUsername,
+                    password: signInPassword,
+                }),
+            });
 
-        //Simulated sign-in:
-        onAuthChange(signInUsername, AuthState.Authenticated);
-
-        localStorage.setItem('userName', signInUsername);
-
-        navigate('/home');
+            if (response.ok) {
+                const user = await response.json();
+                onAuthChange(user.username, AuthState.Authenticated);
+                localStorage.setItem('userName', user.username);
+                navigate('/home');
+            } else {
+                setDisplayError('Invalid username or password.')
+            }
+        } catch (error) {
+            console.error('Sign In API error: ', error);
+            displayError('Could not connect to the server.');
+            
+        }
     }
 
     async function handleRegister(event) {
@@ -51,16 +68,36 @@ export function Signin({ onAuthChange, AuthState }) {
             return;
         }
 
-        //**Placeholder for Register API call**
+        try {
+            const response = await fetch('/api/auth/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: registerEmail,
+                    username: registerUsername,
+                    password: registerPassword,
+                }),
+            });
 
-        //Simulated user registration:
-        onAuthChange(registerUsername, AuthState.Authenticated);
-
-        localStorage.setItem('userName', registerUsername);
-
-        navigate('/home');
+            if (response.ok) {
+                onAuthChange(registerUsername, AuthState.Authenticated);
+                localStorage.setItem('userName', registerUsername);
+                navigate('/home');
+            } else {
+                const errorData = await response.json();
+                if (response.status === 409) {
+                    setDisplayError('A user with that email already exists.');
+                } else {
+                    setDisplayError(errorData.msg || 'Registration failed. Please try again.');
+                }
+            }
+        } catch (error) {
+            console.error('Registration API error: ', error);
+            setDisplayError('Could not connect to the server.');
+        }
     }
-
 
 
     return (

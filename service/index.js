@@ -29,17 +29,17 @@ apiRouter.post('/auth/create', async (req, res) => {
         const user = await createUser(req.body.email, req.body.password, req.body.username);
 
         setAuthCookie(res, user.token);
-        res.send({ email: user.email });
+        res.send({ email: user.email, username: user.username });
     }
 });
 
 apiRouter.post('/auth/login', async (req, res) => {
-    const user = await findUser('email', req.body.email);
+    const user = await findUser('username', req.body.username);
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
             user.token = uuid.v4();
             setAuthCookie(res, user.token);
-            res.send({ email: user.email });
+            res.send({ username: user.username });
             return;
         }
     }
