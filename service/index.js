@@ -124,6 +124,22 @@ apiRouter.post('/catch', authenticate, (req, res) => {
 apiRouter.get('/catches', authenticate, (req, res) => {
     res.send(catches);
 });
+
+apiRouter.post('/friend/request', authenticate, async (req, res) => {
+    const { friendEmail } = req.body;
+    if (!friendEmail) {
+        return res.status(400).send({ msg: 'Friend email required.' });
+    }
+
+    const friend = await findUser('email', friendEmail);
+
+    if (friend) {
+        console.log(`MOCK: ${req.user.username} sent a friend request to ${friend.username}`);
+        res.status(200).send({ msg: `Friend request sent to ${friendEmail}` });
+    } else {
+        res.status(404).send({ msg: `User with the email ${friendEmail} not found.` });
+    }
+});
   
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
