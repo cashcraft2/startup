@@ -9,14 +9,6 @@ import { Plan } from './plan/plan';
 import { AuthState } from './signin/authState';
 
 
-const initialCatches = [
-    { id: 101, photo: null, species: 'Largemouth Bass', length: 12.4, weight: 10.9, bait: 'None', catchTime: '2025-09-08T05:33', airTemp: 62.7, skyConditions: 'Partly Cloudy', location: {lat: 40, lng: -110}, notes: 'Early bird gets the worm.', angler: 'Jane Doe' },
-    { id: 102, photo: null, species: 'Rainbow Trout', length: 10.8, weight: 9.6, bait: 'Power Bait', catchTime: '2025-09-23T16:33', airTemp: 65.8, skyConditions: 'Sunny', location: {lat: 41, lng: -112}, notes: 'Caught on East side of the reservoir.', angler: 'Mike Jensen' },
-];
-
-const initialNotifications = [
-    {id: 1, message: "Welcome to OutFishn! Start logging your catches.", timestamp: new Date().toISOString()},
-];
 
 const calculateLeaderboard = (allCatches) => {
     const sortedCatches = [...allCatches].sort((a, b) => b.weight - a.weight);
@@ -41,74 +33,106 @@ function AppContent() {
     const location = useLocation();
     const isSigninPage = location.pathname === '/';
 
-    const [allCatches, setAllCatches] = useState(
-        JSON.parse(localStorage.getItem('fishLog')) || initialCatches
-    );
+    const [allCatches, setAllCatches] = useState([]);
 
     const leaderboard = calculateLeaderboard(allCatches);
 
-    const [notifications, setNotifications] = useState(
-        JSON.parse(localStorage.getItem('appNotifications')) || initialNotifications
-    );
+    const [notifications, setNotifications] = useState([]);
 
-    useEffect(() => {
-        localStorage.setItem('appNotifications', JSON.stringify(notifications));
-    }, [notifications]);
-
-    useEffect(() => {
-        localStorage.setItem('fishLog', JSON.stringify(allCatches));
-
-    }, [allCatches]);
-
-    const handleNewCatch = useCallback((newCatch) => {
-        setAllCatches(prevCatches => {
-            const updatedCatches = [newCatch, ...prevCatches];
-            const currentLeaderboard = calculateLeaderboard(updatedCatches);
-            const madeLeaderboard = currentLeaderboard.some(item => 
-                item.angler === newCatch.angler && item.weight === newCatch.weight
-            );
-
-            if(madeLeaderboard) {
-                const rank = currentLeaderboard.findIndex(item => item.weight === newCatch.weight) + 1;
-                const notification = {
-                    id: Date.now() + 1,
-                    message: `${newCatch.angler}'s new catch is now rank #${rank} in the leaderboard! 🏆`,
-                    timestamp: new Date().toISOString(),
-                };
-
-                setNotifications(prevNotifs => [notification, ...prevNotifs]);
+    const fetchUserData = useCallback(async () => {
+        try {
+            let response = await fetch('/api/user');
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data.');
             }
+            const userData = await response.json();
+            setUserName(userData.userName);
 
-            return updatedCatches;
-        });
+            response = await fetch('/api/catches');
+            if (response.ok) {
+                const catches = await response.json();
+                setAllCatches(catches);
+            }
+            
+            if (notifications.length === 0) {
+                setNotifications([{id: Date.now(), message: `Data loaded for ${userData.userName}.`, timestamp: new Date().toISOString()}]);
+            }
+        } catch (error) {
+            console.error('Error fetching initial data: ', error);
+            await signout(true);
+        }
+    }, [notifications.length, signout]);
+
+    useEffect(() => {
+        if (authState === AuthState.Authenticated) {
+            fetchUserData();
+        }
+    }, [authState, fetchUserData]);
+
+    const handleNewCatch = useCallback(async (newCatch) => {
+        try{
+            const response = await fetch('/api/catch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newCatch),
+            });
+
+            if (response.ok) {
+                const savedCatch = await response.json();
+
+                setAllCatches(prevCatches => {
+                    const updatedCatches = [savedCatch, ...prevCatches];
+                    const currentLeaderboard = calculateLeaderboard(updatedCatches);
+
+                    const madeLeaderboard = currentLeaderboard.some(item => 
+                        item.angler === savedCatch.angler && item.weight === savedCatch.weight
+                    );
+        
+                    if (madeLeaderboard) {
+                        const rank = currentLeaderboard.findIndex(item => item.angler === savedCatch.angler && item.weight === savedCatch.weight) + 1;
+                        const notification = {
+                            id: Date.now() + 1,
+                            message: `${savedCatch.angler}'s new catch is now rank #${rank} in the leaderboard! 🏆`,
+                            timestamp: new Date().toISOString(),
+                        };
+        
+                        setNotifications(prevNotifs => [notification, ...prevNotifs]);
+                    }
+        
+                    return updatedCatches;
+                });
+                return true;
+            } else {
+                console.error('Failed to log catch: ', response.statusText);
+                return false;
+            }
+        } catch (error) {
+            console.error('Network error when logging catch: ', error);
+            return false;
+        }
+        
     }, []);
 
-    async function signout() {
+    const signout = useCallback(async (silent = false) => {
         try {
             const response = await fetch('/api/auth/logout', {
                 method: DELETE,
             });
 
-            if (response.status == 204) {
-                localStorage.removeItem('userName');
-                setAuthState(AuthState.Unauthenticated);
-                setUserName('');
-                navigate('/');
-            } else {
-                console.error('Logout failed on server but state reset anyway.');
-                localStorage.removeItem('userName');
-                setAuthState(AuthState.Unauthenticated);
-                setUserName('');
-                navigate('/');
-            }
+            if (response.status !== 204 && !silent) {
+                console.error('Logout failed on server.');
+            } 
         } catch (error) {
-            console.error('Network error during logout: ', error);
+            if (!silent) console.error('Network error during logout: ', error);
+        } finally {
             localStorage.removeItem('userName');
             setAuthState(AuthState.Unauthenticated);
             setUserName('');
+            setAllCatches([]);
+            setNotifications([]);
             navigate('/');
         }
-    }
+    }, [navigate]);
 
     return (
         <div className="app-container">
