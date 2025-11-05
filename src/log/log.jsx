@@ -50,7 +50,7 @@ export function Log({ onCatchLogged, catches, userName }) {
       borderRadius: '12px'
     };
 
-    const handleCatchSubmit = (event) => {
+    const handleCatchSubmit = async (event) => {
         event.preventDefault();
 
         if (!species || !weight || !length) {
@@ -59,32 +59,34 @@ export function Log({ onCatchLogged, catches, userName }) {
         }
 
         const newCatch = {
-            id: Date.now(),
             photo: photo,
             species: species.trim(),
             length: parseFloat(length),
             weight: parseFloat(weight),
             bait: bait.trim(),
-            catchTime: catchTime || new Date().toISOString().slice(0,16),
+            catchTime: catchTime ? new Date(catchTime).toISOString() : new Date().toISOString(),
             airTemp: airTemp ? parseFloat(airTemp) : null,
             skyConditions: skyConditions.trim(),
             location: location,
             notes: notes.trim(),
-            angler: userName,
         };
 
-        onCatchLogged(newCatch);
+        const success = await onCatchLogged(newCatch);
 
-        setSpecies('');
-        setLength('');
-        setWeight('');
-        setBait('');
-        setCatchTime('');
-        setAirTemp('');
-        setSkyConditions('');
-        setNotes('');
-        setPhoto(null);
-        alert('Catch successfully logged!');
+        if (success) {
+            setSpecies('');
+            setLength('');
+            setWeight('');
+            setBait('');
+            setCatchTime('');
+            setAirTemp('');
+            setSkyConditions('');
+            setNotes('');
+            setPhoto(null);
+            alert('Catch successfully logged!');
+        } else {
+            alert('Failed to log catch. Please try again.');
+        }        
     };
 
     const handlePhotoChange = (event) => {
