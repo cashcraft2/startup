@@ -12,22 +12,43 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
         document.title = 'OutFishn | Home';
     }, []);
 
-    const handleFriendSubmit = (event) => {
+    const handleFriendSubmit = async (event) => {
         event.preventDefault();
-        if (!friendEmail || friendEmail.trim().length === 0) {
+        const fiendEmailTrimmed = friendEmail.trim();
+
+        if (!friendEmailTrimmed || friendEmailTrimmed.length === 0) {
             alert("Please enter a friend's email.");
             return;
         }
 
-        const newNotification = {
-            id: Date.now(),
-            message: `Friend request sent to ${friendEmail.trim()} (MOCKED)`,
-            timestamp: new Date().toISOString(),
-        };
+        try{
+            const response = await fetch('/api/friend/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ friendEmailTrimmed }),
+            });
 
-        setNotifications([newNotification, ...notifications]);
-        alert(`MOCK: Friend request sent to ${friendEmail.trim()}!`);
-        setFriendEmial('');
+            const result = await response.json();
+
+            if (response.ok) {
+                const newNotification = {
+                    id: Date.now(),
+                    message: `Friend request sent to ${friendEmailTrimmed}!`,
+                    timestamp: new Date().toISOString(),
+                };
+
+                setNotifications([newNotification, ...notifications]);
+                alert(`Friend request successfully sent!`);
+                setFriendEmial('');
+            } else if (response.status === 404) {
+                alert(`Error: ${result.message}`);
+            } else {
+                alert(`Failed to send request: ${result.message || 'Server Error'}`);
+            }
+        } catch (error) {
+            console.error('Network error while sending friend request: ', error);
+            alert('A network error occurred. Please try again.');
+        }
     };
 
     const formatTimestamp = (isoString) => {
