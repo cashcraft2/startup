@@ -21,7 +21,53 @@ var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 
-// Application endpoints
+// Middleware functions
+
+async function authenticate(req, res, next) {
+    const authToken = req.cookies[authCookieName];
+    const user = await findUser('token', authToken);
+
+    if (user) {
+        req.user = user;
+        next();
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' });
+    }
+}
+
+async function createUser(email, password, username) {
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = {
+        email: email,
+        password: passwordHash,
+        username: username,
+        token: uuid.v4(),
+        profilePictureUrl: '/placeholder.png',
+    };
+
+    users.push(user);
+
+    return user;
+}
+
+async function findUser(field, value) {
+    if (!value) return null;
+
+    return users.find((u) => u[field] === value);
+}
+
+function setAuthCookie(res, authToken) {
+    res.cookie(authCookieName, authToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
+    });
+}
+
+// API endpoints
+
 apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('email', req.body.email)) {
         res.status(409).send({ msg: 'Existing user' });
@@ -55,35 +101,29 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     res.status(204).end();
 });
 
-async function createUser(email, password, username) {
-    const passwordHash = await bcrypt.hash(password, 10);
+apiRouter.get('/user', authenticate, (req, res) => {
+    res.send({
+        username: req.user.username,
+        email: req.user.email,
+        profilePictureUrl: req.user.profilePictureUrl,
+    });
+});
 
-    const user = {
-        email: email,
-        password: passwordHash,
-        username: username,
-        token: uuid.v4(),
+apiRouter.post('/catch', authenticate, (req, res) => {
+    const newCatch = {
+        id: uuid.v4(),
+        angler: req.user.username,
+        timestamp: new Date().toISOString(),
+        ...req.body,
     };
 
-    users.push(user);
+    catches.push(newCatch);
+    res.status(201).send(newCatch);
+});
 
-    return user;
-}
-
-async function findUser(field, value) {
-    if (!value) return null;
-
-    return users.find((u) => u[field] === value);
-}
-
-function setAuthCookie(res, authToken) {
-    res.cookie(authCookieName, authToken, {
-        maxAge: 1000 * 60 * 60 * 24 * 365,
-        secure: true,
-        httpOnly: true,
-        sameSite: 'strict',
-    });
-}
+apiRouter.get('/catches', authenticate, (req, res) => {
+    res.send(catches);
+});
   
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
