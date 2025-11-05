@@ -22,6 +22,7 @@ export function Signin({ onAuthChange, AuthState }) {
 
     async function handleSignIn(event) {
         event.preventDefault();
+        setDisplayError(null);
 
         if (!signInUsername || !signInPassword) {
             setDisplayError("Please enter both username and password.");
@@ -42,21 +43,20 @@ export function Signin({ onAuthChange, AuthState }) {
 
             if (response.ok) {
                 const user = await response.json();
-                onAuthChange(user.username, AuthState.Authenticated);
+                onAuthChange(user.username);
                 localStorage.setItem('userName', user.username);
-                navigate('/home');
             } else {
                 setDisplayError('Invalid username or password.')
             }
         } catch (error) {
             console.error('Sign In API error: ', error);
-            displayError('Could not connect to the server.');
-            
+            displayError('Could not connect to the server. Please check your network.');
         }
     }
 
     async function handleRegister(event) {
         event.preventDefault();
+        setDisplayError(null);
 
         if (!registerEmail || !registerUsername || !registerPassword || !confirmPassword) {
             setDisplayError('All fields required for registration.');
@@ -82,9 +82,8 @@ export function Signin({ onAuthChange, AuthState }) {
             });
 
             if (response.ok) {
-                onAuthChange(registerUsername, AuthState.Authenticated);
+                onAuthChange(registerUsername);
                 localStorage.setItem('userName', registerUsername);
-                navigate('/home');
             } else {
                 const errorData = await response.json();
                 if (response.status === 409) {
