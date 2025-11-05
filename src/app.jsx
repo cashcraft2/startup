@@ -26,9 +26,9 @@ const calculateLeaderboard = (allCatches) => {
 function AppContent() {
     const navigate = useNavigate();
 
-    const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+    const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
     const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
-    const [authState, setAuthState] = React.useState(currentAuthState);
+    const [authState, setAuthState] = useState(currentAuthState);
 
     const location = useLocation();
     const isSigninPage = location.pathname === '/';
@@ -39,6 +39,27 @@ function AppContent() {
 
     const [notifications, setNotifications] = useState([]);
 
+    const signout = useCallback(async (silent = false) => {
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: 'DELETE',
+            });
+
+            if (response.status !== 204 && !silent) {
+                console.error('Logout failed on server.');
+            } 
+        } catch (error) {
+            if (!silent) console.error('Network error during logout: ', error);
+        } finally {
+            localStorage.removeItem('userName');
+            setAuthState(AuthState.Unauthenticated);
+            setUserName('');
+            setAllCatches([]);
+            setNotifications([]);
+            navigate('/');
+        }
+    }, [navigate]);
+    
     const fetchUserData = useCallback(async () => {
         try {
             let response = await fetch('/api/user');
@@ -46,7 +67,7 @@ function AppContent() {
                 throw new Error('Failed to fetch user data.');
             }
             const userData = await response.json();
-            setUserName(userData.userName);
+            setUserName(userData.username);
 
             response = await fetch('/api/catches');
             if (response.ok) {
@@ -55,7 +76,7 @@ function AppContent() {
             }
             
             if (notifications.length === 0) {
-                setNotifications([{id: Date.now(), message: `Data loaded for ${userData.userName}.`, timestamp: new Date().toISOString()}]);
+                setNotifications([{id: Date.now(), message: `Data loaded for ${userData.username}.`, timestamp: new Date().toISOString()}]);
             }
         } catch (error) {
             console.error('Error fetching initial data: ', error);
@@ -112,27 +133,6 @@ function AppContent() {
         }
         
     }, []);
-
-    const signout = useCallback(async (silent = false) => {
-        try {
-            const response = await fetch('/api/auth/logout', {
-                method: DELETE,
-            });
-
-            if (response.status !== 204 && !silent) {
-                console.error('Logout failed on server.');
-            } 
-        } catch (error) {
-            if (!silent) console.error('Network error during logout: ', error);
-        } finally {
-            localStorage.removeItem('userName');
-            setAuthState(AuthState.Unauthenticated);
-            setUserName('');
-            setAllCatches([]);
-            setNotifications([]);
-            navigate('/');
-        }
-    }, [navigate]);
 
     return (
         <div className="app-container">

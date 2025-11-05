@@ -58,11 +58,19 @@ export function Log({ onCatchLogged, catches, userName }) {
             return;
         }
 
+        const parsedLength = parseFloat(length);
+        const parsedWeight = parseFloat(weight);
+
+        if (isNaN(parsedLength) || isNaN(parsedWeight)) {
+            alert('Length and weight must be valid numbers.');
+            return;
+        }
+
         const newCatch = {
             photo: photo,
             species: species.trim(),
-            length: parseFloat(length),
-            weight: parseFloat(weight),
+            length: parsedLength,
+            weight: parsedWeight,
             bait: bait.trim(),
             catchTime: catchTime ? new Date(catchTime).toISOString() : new Date().toISOString(),
             airTemp: airTemp ? parseFloat(airTemp) : null,

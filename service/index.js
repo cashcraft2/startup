@@ -18,8 +18,6 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 var apiRouter = express.Router();
-app.use(`/api`, apiRouter);
-
 
 // Middleware functions
 
@@ -67,6 +65,8 @@ function setAuthCookie(res, authToken) {
 }
 
 // API endpoints
+
+app.use(`/api`, apiRouter);
 
 apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('email', req.body.email)) {
@@ -141,6 +141,6 @@ apiRouter.post('/friend/request', authenticate, async (req, res) => {
     }
 });
   
-  app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-  });
+});

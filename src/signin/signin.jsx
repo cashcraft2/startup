@@ -43,14 +43,15 @@ export function Signin({ onAuthChange, AuthState }) {
 
             if (response.ok) {
                 const user = await response.json();
-                onAuthChange(user.username);
+                onAuthChange(user.username, AuthState.Authenticated);
                 localStorage.setItem('userName', user.username);
+                navigate('/home');
             } else {
                 setDisplayError('Invalid username or password.')
             }
         } catch (error) {
             console.error('Sign In API error: ', error);
-            displayError('Could not connect to the server. Please check your network.');
+            setDisplayError('Could not connect to the server. Please check your network.');
         }
     }
 
@@ -82,8 +83,9 @@ export function Signin({ onAuthChange, AuthState }) {
             });
 
             if (response.ok) {
-                onAuthChange(registerUsername);
+                onAuthChange(registerUsername, AuthState.Authenticated);
                 localStorage.setItem('userName', registerUsername);
+                navigate('/home');
             } else {
                 const errorData = await response.json();
                 if (response.status === 409) {

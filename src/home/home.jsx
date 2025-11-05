@@ -149,7 +149,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
                                         <td>{item.rank}</td>
                                         <td>{item.angler}</td>
                                         <td>{item.species}</td>
-                                        <td>{item.weight.toFixed(1)}</td>
+                                        <td>{item.weight}</td>
                                     </tr>
                                 ))}
                             </tbody>
