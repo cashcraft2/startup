@@ -33,11 +33,12 @@ function AppContent() {
     const location = useLocation();
     const isSigninPage = location.pathname === '/';
 
-    const [allCatches, setAllCatches] = useState([]);
-
-    const leaderboard = calculateLeaderboard(allCatches);
+    const [userLog, setUserLog] = useState([]);
+    const [leaderboardCatches, setLeaderboardCatches] = useState([]);
+    const leaderboard = calculateLeaderboard(leaderboardCatches);
 
     const [notifications, setNotifications] = useState([]);
+
 
     const signout = useCallback(async (silent = false) => {
         try {
@@ -54,7 +55,8 @@ function AppContent() {
             localStorage.removeItem('userName');
             setAuthState(AuthState.Unauthenticated);
             setUserName('');
-            setAllCatches([]);
+            setUserLog([]);
+            setLeaderboardCatches([]);
             setNotifications([]);
             navigate('/');
         }
@@ -71,8 +73,14 @@ function AppContent() {
 
             response = await fetch('/api/catches');
             if (response.ok) {
-                const catches = await response.json();
-                setAllCatches(catches);
+                const privateCatches = await response.json();
+                setUserLog(privateCatches);
+            }
+
+            response = await fetch('/api/leaderboard');
+            if (response.ok) {
+                const socialCatches = await response.json();
+                setLeaderboardCatches(socialCatches);
             }
             
             if (notifications.length === 0) {
@@ -101,8 +109,10 @@ function AppContent() {
             if (response.ok) {
                 const savedCatch = await response.json();
 
-                setAllCatches(prevCatches => {
-                    const updatedCatches = [savedCatch, ...prevCatches];
+                setUserLog(prevCatches => [savedCatch, ...prevCatches]);
+
+                setLeaderboardCatches(prevSocialCatches => {
+                    const updatedCatches = [savedCatch, ...prevSocialCatches];
                     const currentLeaderboard = calculateLeaderboard(updatedCatches);
 
                     const madeLeaderboard = currentLeaderboard.some(item => 
@@ -197,7 +207,7 @@ function AppContent() {
                         setNotifications={setNotifications}
                     />} 
                 />
-                <Route path='/log' element={<Log userName={userName} catches={allCatches} onCatchLogged={handleNewCatch} />} />
+                <Route path='/log' element={<Log userName={userName} catches={userLog} onCatchLogged={handleNewCatch} />} />
                 <Route path='/plan' element={<Plan userName={userName}/>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>

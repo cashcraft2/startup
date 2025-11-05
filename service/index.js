@@ -122,7 +122,10 @@ apiRouter.post('/catch', authenticate, (req, res) => {
 });
 
 apiRouter.get('/catches', authenticate, (req, res) => {
-    res.send(catches);
+    const userCatches = catches.filter(
+        (catchItem) => catchItem.angler === req.user.username
+    );
+    res.send(userCatches);
 });
 
 apiRouter.post('/friend/request', authenticate, async (req, res) => {
@@ -139,6 +142,25 @@ apiRouter.post('/friend/request', authenticate, async (req, res) => {
     } else {
         res.status(404).send({ msg: `User with the email ${friendEmail} not found.` });
     }
+});
+
+const mockFriends = (username) => {
+    if (username === 'testuser') {
+        return ['Jane Doe', 'Mike Jensen'];
+    }
+    return [];
+};
+
+apiRouter.get('/leaderboard', authenticate, (req, res) => {
+    const currentUser = req.user.username;
+    const friends = mockFriends(currentUser);
+
+    const permittedAnglers = [currentUser, ...friends];
+
+    const socialCatches = catches.filter(
+        (catchItem) => permittedAnglers.includes(catchItem.angler)
+    );
+    res.send(socialCatches);
 });
   
 app.listen(port, () => {
