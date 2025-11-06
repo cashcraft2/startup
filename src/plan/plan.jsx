@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './plan.css'
 
-const initialTrips = [
-    { id: 1, name: "Boy's Trip", location: "Strawberry Reservoir", date: "2025-10-18", guests: "Jack Mann, John Doe, Jake Smith", notes: "Jake is driving. Meet at Walmart" },
-    { id: 2, name: "Family Trip", location: "Silver Lake", date: "2025-10-26", guests: "Invite all family.", notes: "Bring extra layers. It'll be cold." },
-];
-
-const TRIP_STORAGE_KEY = 'fishingTrips';
 
 export function Plan({ userName }) {
     const [tripName, setTripName] = useState('');
@@ -15,23 +9,30 @@ export function Plan({ userName }) {
     const [tripGuests, setTripGuests] = useState('');
     const [tripNotes, setTripNotes] = useState('');
 
-    const [trips, setTrips] = useState(() => {
+    const [trips, setTrips] = useState([]);
+
+    const fetchTrips = async () => {
         try {
-            const savedTrips = localStorage.getItem(`${userName}-${TRIP_STORAGE_KEY}`);
-            return savedTrips ? JSON.parse(savedTrips) : initialTrips;
+            const response = await fetch('/api/trips'); 
+            if (response.ok) {
+                const data = await response.json();
+                setTrips(data);
+            } else if (response.status === 401) {
+                console.error("User not authorized or logged out.");
+                setTrips([]);
+            } else {
+                console.error("Failed to fetch trips:", response.statusText);
+            }
         } catch (e) {
-            console.error("Could not load trips from Local Storage: ", e);
-            return initialTrips;
+            console.error("Error fetching trips:", e);
         }
-    });
+    };
 
     useEffect(() => {
         document.title = 'OutFishn | Trip Planner';
+        fetchTrips();
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem(`${userName}-${TRIP_STORAGE_KEY}`, JSON.stringify(trips));
-    }, [trips, userName]);
 
     const formatDate = (isoString) => {
         if (!isoString) return '';
@@ -39,7 +40,7 @@ export function Plan({ userName }) {
         return `${month}/${day}/${year}`;
     };
 
-    const handleTripSubmit = (event) => {
+    const handleTripSubmit = async (event) => {
         event.preventDefault();
 
         if (!tripName || !tripLocation || !tripDate) {
@@ -47,8 +48,7 @@ export function Plan({ userName }) {
             return;
         }
 
-        const newTrip = {
-            id: Date.now(),
+        const newTripData = {
             name: tripName.trim(),
             location: tripLocation.trim(),
             date: tripDate,
@@ -56,18 +56,49 @@ export function Plan({ userName }) {
             notes: tripNotes.trim(),
         };
 
-        setTrips(prevTrips => [newTrip, ...prevTrips]);
+        try {
+            const response = await fetch('/api/trip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newTripData),
+            });
 
-        setTripName('');
-        setTripLocation('');
-        setTripDate('');
-        setTripGuests('');
-        setTripNotes('');
+            if (response.ok) {
+                const addedTrip = await response.json();
+                setTrips(prevTrips => [addedTrip, ...prevTrips]);
+                
+                setTripName('');
+                setTripLocation('');
+                setTripDate('');
+                setTripGuests('');
+                setTripNotes('');
+            } else {
+                alert(`Failed to plan trip: ${response.statusText}`);
+            }
+        } catch (e) {
+            console.error("Error creating trip:", e);
+            alert("An error occurred while connecting to the server.");
+        }
     };
 
-    const handleDeleteTrip = (id) => {
+    const handleDeleteTrip = async (id) => {
         if (window.confirm("Are you sure you want to delete this trip?")) {
-            setTrips(prevTrips => prevTrips.filter(trip => trip.id !== id));
+            try {
+                const response = await fetch(`/api/trip/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok || response.status === 204) {
+                    setTrips(prevTrips => prevTrips.filter(trip => trip.id !== id));
+                } else {
+                    alert(`Failed to delete trip: ${response.statusText}`);
+                }
+            } catch (e) {
+                console.error("Error deleting trip:", e);
+                alert("An error occurred while connecting to the server.");
+            }
         }
     };
 

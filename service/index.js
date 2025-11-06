@@ -9,6 +9,7 @@ const authCookieName = 'token';
 let users = [];
 let catches = [];
 let pendingFriendRequests = [];
+let trips = [];
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -127,6 +128,47 @@ apiRouter.get('/catches', authenticate, (req, res) => {
         (catchItem) => catchItem.angler === req.user.username
     );
     res.send(userCatches);
+});
+
+apiRouter.get('/trips', authenticate, (req, res) => {
+    const userTrips = trips.filter(
+        (trip) => trip.planner === req.user.username
+    ).sort((a, b) => new Date(a.date) - new Date(b.date));
+    res.send(userTrips);
+});
+
+apiRouter.post('/trip', authenticate, (req, res) => {
+    const newTrip = {
+        id: uuid.v4(),
+        planner: req.user.username,
+        name: req.body.name,
+        location: req.body.location,
+        date: req.body.date,
+        guests: req.body.guests,
+        notes: req.body.notes,
+    };
+
+    if (!newTrip.name || !newTrip.location || !newTrip.date) {
+        return res.status(400).send({ msg: 'Trip name, location, and date required.' });
+    }
+
+    trips.push(newTrip);
+    res.status(201).send(newTrip);
+});
+
+apiRouter.delete('/trip/:id', authenticate, (req, res) => {
+    const tripId = req.params.id;
+    const initialLength = trips.length;
+
+    trips = trips.filter(
+        (trip) => !(trip.id === tripId && trip.planner === req.user.username)
+    );
+
+    if (trips.length < initialLength) {
+        res.status(204).end();
+    } else {
+        res.status(404).send({ msg: 'Trip not found or not authorized to delete.' });
+    }
 });
 
 apiRouter.post('/friend/request', authenticate, async (req, res) => {
