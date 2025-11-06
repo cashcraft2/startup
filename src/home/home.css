@@ -204,6 +204,54 @@ main {
     color: #fff;
 }
 
+.friend-request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.friend-request-item .notification-content {
+    flex-grow: 1;
+}
+
+.request-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.request-actions .button {
+    padding: 0.5em 1em;
+    font-size: 0.85em;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.btn-accept {
+    background-color: rgb(106, 197, 176);
+    color: rgb(27,41,88);
+}
+
+.btn-accept:hover {
+    background-color: rgb(80, 150, 130);
+    color: white;
+}
+
+.btn-decline {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn-decline:hover {
+    background-color: #999;
+    color: white;
+}
+
+.notification-item:not(.friend-request-item) {
+    display: block;
+}
+
 @media (max-width: 768px) {
     main {
         padding: 10px;
