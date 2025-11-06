@@ -1,6 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
+import { send } from 'vite';
+
+function FriendRequestItem({ request, onAction, setNotifications }) {
+    const handleAction = async (action) => {
+        const endpoint = `/api/friends/${action}/${request.senderUsername}`;
+
+        try {
+            const response = await fetch(endpoint, { method: 'POST' });
+
+            if (response.ok) {
+                const result = await response.json();
+                onAction(request.senderUsername);
+
+                const message = `${request.senderUsername}'s request was ${action}ed.`;
+                setNotifications(prev => [{id: Date.now(), message, timestamp: new Date().toISOString()}, ...prev]);
+            } else {
+                alert(`Failed to ${action} request: Server error.`);
+            }
+        } catch (error) {
+            console.error(`Network error during ${action} request:`, error);
+            alert('A network error occurred while processing the request.');
+        }
+    };
+
+    return (
+        <li key={request.id} className='notification-item friend-request-item'>
+            <div className='notification-content'>
+                <p>
+                    Friend request from <strong>{request.senderUsername}</strong>
+                </p>
+                <span className='timestamp'>Received: {new Date(request.timestamp).toLocaleDateString()}</span>
+            </div>
+            <div className='request-actions'>
+                <button
+                    onClick={() => handleAction('accept')}
+                    className='button btn-accept'
+                >
+                    Accept
+                </button>
+                <button
+                    onClick={() => handleAction('decline')}
+                    className='button btn-decline'
+                >
+                    Decline
+                </button>
+            </div>
+        </li>
+    );
+}
 
 export function Home({ userName, leaderboard, notifications, setNotifications }) {
     const [friendEmail, setFriendEmail] = useState('');
@@ -11,6 +60,10 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
     useEffect(() => {
         document.title = 'OutFishn | Home';
     }, []);
+
+    const handleRequestAction = (senderUsername) => {
+        setPendingRequests(prev => prev.filter(req => req.senderUsername !== senderUsername));
+    };
 
     const handleFriendSubmit = async (event) => {
         event.preventDefault();
@@ -157,6 +210,23 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
                     </div>
 
                     <div className="notifications-section box-shadow-style">
+                        {pendingRequests && pendingRequests.length > 0 && (
+                            <>
+                                <h2>Pending Requests ({pendingRequests.length})</h2>
+                                <ul id="friend-request-list">
+                                    {pendingRequests.map(requests => (
+                                        <FriendRequestItem
+                                            key={request.id}
+                                            request={request}
+                                            onAction={handleRequestAction}
+                                            setNotifications={setNotifications}
+                                        />
+                                    ))}
+                                </ul>
+                                <hr style={{margin: '1em 0'}} />
+                            </>
+                        )}
+                        
                         <h2>Notifications</h2>
                         <ul id="notification-list">
                             {notifications.map((item) => (
