@@ -8,7 +8,7 @@ const authCookieName = 'token';
 
 let users = [];
 let catches = [];
-
+let pendingFriendRequests = [];
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -138,8 +138,14 @@ apiRouter.post('/friend/request', authenticate, async (req, res) => {
     const friend = await findUser('email', friendEmail);
 
     if (friend) {
-        console.log(`MOCK: ${req.user.username} sent a friend request to ${friend.username}`);
-        res.status(200).send({ msg: `Friend request sent to ${friendEmail}` });
+        const newRequest = {
+            id: uuid.v4(),
+            senderUsername: req.user.username,
+            receiverUsername: friend.username,
+            timestamp: new Date().toISOString,
+        };
+        pendingFriendRequests.push(newRequest);
+        res.status(200).send({ msg: `Friend request sent to ${friend.username}` });
     } else {
         res.status(404).send({ msg: `User with the email ${friendEmail} not found.` });
     }
@@ -151,6 +157,45 @@ const mockFriends = (username) => {
     }
     return [];
 };
+
+apiRouter.get('/friends/pending', authenticate, (req, res) =>{
+    const pending = pendingFriendRequests.filter(
+        (req) => req.receiverUsername === req.user.username
+    );
+    res.send(pending);
+});
+
+apiRouter.post('/friends/accept/:senderUsername', authenticate, async (req, res) => {
+    const senderUsername = req.params.senderUsername;
+    const receiverUsername = req.user.username;
+
+    const initialCount = pendingFriendRequests.length;
+    pendingFriendRequests = pendingFriendRequests.filter(
+        (req) => !(req.senderUsername === senderUsername && req.receiverUsername === receiverUsername)
+    );
+    if (pendingFriendRequests.length < initialCount) {
+        console.log(`${receiverUsername} accepted ${senderUsername}'s friend request.`);
+        res.status(200).send({ msg: `Successfully accepted ${senderUsername}` });
+    } else {
+        res.status(404).send({ msg: 'Pending request not found.' });
+    }
+});
+
+apiRouter.post('/friends/decline/:senderUsername', authenticate, (req, res) => {
+    const senderUsername = req.params.senderUsername;
+    const receiverUsername = req.user.username;
+
+    const initialCount = pendingFriendRequests.length;
+    pendingFriendRequests = pendingFriendRequests.filter(
+        (req) => !(req.senderUsername === senderUsername && req.receiverUsername === receiverUsername)
+    );
+
+    if (pendingFriendRequests.length < initialCount) {
+        res.status(200).send({ msg: `Successfully declined ${senderUsername}` });
+    } else {
+        res.status(404).send({ msg: 'Pending request not found.' });
+    }
+});
 
 apiRouter.get('/leaderboard', authenticate, (req, res) => {
     const currentUser = req.user.username;
