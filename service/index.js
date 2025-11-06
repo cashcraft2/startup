@@ -9,6 +9,7 @@ const authCookieName = 'token';
 let users = [];
 let catches = [];
 
+
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 app.use(express.json({ limit: '50mb' }));
