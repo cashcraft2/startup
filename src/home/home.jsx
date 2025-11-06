@@ -3,7 +3,7 @@ import './home.css';
 import { Link } from 'react-router-dom';
 
 export function Home({ userName, leaderboard, notifications, setNotifications }) {
-    const [friendEmail, setFriendEmial] = useState('');
+    const [friendEmail, setFriendEmail] = useState('');
     const [profilePicture, setProfilePicture] = useState(
         localStorage.getItem(`${userName}-profile-pic`) || '/placeholder.png'
     );
@@ -14,7 +14,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
 
     const handleFriendSubmit = async (event) => {
         event.preventDefault();
-        const fiendEmailTrimmed = friendEmail.trim();
+        const friendEmailTrimmed = friendEmail.trim();
 
         if (!friendEmailTrimmed || friendEmailTrimmed.length === 0) {
             alert("Please enter a friend's email.");
@@ -25,7 +25,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
             const response = await fetch('/api/friend/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ friendEmailTrimmed }),
+                body: JSON.stringify({ friendEmail: friendEmailTrimmed }),
             });
 
             const result = await response.json();
@@ -39,11 +39,11 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
 
                 setNotifications([newNotification, ...notifications]);
                 alert(`Friend request successfully sent!`);
-                setFriendEmial('');
+                setFriendEmail('');
             } else if (response.status === 404) {
-                alert(`Error: ${result.message}`);
+                alert(`Error: ${result.msg}`);
             } else {
-                alert(`Failed to send request: ${result.message || 'Server Error'}`);
+                alert(`Failed to send request: ${result.msg || 'Server Error'}`);
             }
         } catch (error) {
             console.error('Network error while sending friend request: ', error);
@@ -122,7 +122,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
                                     type="text" 
                                     placeholder="their@email.com"
                                     value={friendEmail}
-                                    onChange={(e) => setFriendEmial(e.target.value)} 
+                                    onChange={(e) => setFriendEmail(e.target.value)} 
                                 />
                             </div>
                             <button type="submit" className="button">Submit</button>
