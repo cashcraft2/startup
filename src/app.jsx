@@ -38,6 +38,7 @@ function AppContent() {
     const leaderboard = calculateLeaderboard(leaderboardCatches);
 
     const [notifications, setNotifications] = useState([]);
+    const [pendingRequests, setPendingRequests] = useState([]);
 
 
     const signout = useCallback(async (silent = false) => {
@@ -81,6 +82,12 @@ function AppContent() {
             if (response.ok) {
                 const socialCatches = await response.json();
                 setLeaderboardCatches(socialCatches);
+            }
+
+            response = await fetch('/api/friends/pending');
+            if (response.ok) {
+                const pending = await response.json();
+                setPendingRequests(pending);
             }
             
             if (notifications.length === 0) {
@@ -205,6 +212,8 @@ function AppContent() {
                         leaderboard={leaderboard}
                         notifications={notifications}
                         setNotifications={setNotifications}
+                        pendingRequests={pendingRequests}
+                        setPendingRequests={setPendingRequests}
                     />} 
                 />
                 <Route path='/log' element={<Log userName={userName} catches={userLog} onCatchLogged={handleNewCatch} />} />

@@ -142,7 +142,7 @@ apiRouter.post('/friend/request', authenticate, async (req, res) => {
             id: uuid.v4(),
             senderUsername: req.user.username,
             receiverUsername: friend.username,
-            timestamp: new Date().toISOString,
+            timestamp: new Date().toISOString(),
         };
         pendingFriendRequests.push(newRequest);
         res.status(200).send({ msg: `Friend request sent to ${friend.username}` });
@@ -160,7 +160,7 @@ const mockFriends = (username) => {
 
 apiRouter.get('/friends/pending', authenticate, (req, res) =>{
     const pending = pendingFriendRequests.filter(
-        (req) => req.receiverUsername === req.user.username
+        (requestItem) => requestItem.receiverUsername === req.user.username
     );
     res.send(pending);
 });
@@ -171,7 +171,7 @@ apiRouter.post('/friends/accept/:senderUsername', authenticate, async (req, res)
 
     const initialCount = pendingFriendRequests.length;
     pendingFriendRequests = pendingFriendRequests.filter(
-        (req) => !(req.senderUsername === senderUsername && req.receiverUsername === receiverUsername)
+        (pendingReq) => !(pendingReq.senderUsername === senderUsername && pendingReq.receiverUsername === receiverUsername)
     );
     if (pendingFriendRequests.length < initialCount) {
         console.log(`${receiverUsername} accepted ${senderUsername}'s friend request.`);
@@ -187,7 +187,7 @@ apiRouter.post('/friends/decline/:senderUsername', authenticate, (req, res) => {
 
     const initialCount = pendingFriendRequests.length;
     pendingFriendRequests = pendingFriendRequests.filter(
-        (req) => !(req.senderUsername === senderUsername && req.receiverUsername === receiverUsername)
+        (pendingReq) => !(pendingReq.senderUsername === senderUsername && pendingReq.receiverUsername === receiverUsername)
     );
 
     if (pendingFriendRequests.length < initialCount) {

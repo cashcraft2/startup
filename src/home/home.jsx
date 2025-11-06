@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
-import { send } from 'vite';
 
 function FriendRequestItem({ request, onAction, setNotifications }) {
     const handleAction = async (action) => {
@@ -51,7 +50,7 @@ function FriendRequestItem({ request, onAction, setNotifications }) {
     );
 }
 
-export function Home({ userName, leaderboard, notifications, setNotifications }) {
+export function Home({ userName, leaderboard, notifications, setNotifications, pendingRequests, setPendingRequests }) {
     const [friendEmail, setFriendEmail] = useState('');
     const [profilePicture, setProfilePicture] = useState(
         localStorage.getItem(`${userName}-profile-pic`) || '/placeholder.png'
@@ -214,7 +213,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
                             <>
                                 <h2>Pending Requests ({pendingRequests.length})</h2>
                                 <ul id="friend-request-list">
-                                    {pendingRequests.map(requests => (
+                                    {pendingRequests.map(request => (
                                         <FriendRequestItem
                                             key={request.id}
                                             request={request}
@@ -226,7 +225,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications })
                                 <hr style={{margin: '1em 0'}} />
                             </>
                         )}
-                        
+
                         <h2>Notifications</h2>
                         <ul id="notification-list">
                             {notifications.map((item) => (
