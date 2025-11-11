@@ -113,6 +113,18 @@ For this deliverable I created full functionality and MOCK functionality for dif
 
 * `useNavigate` and `useLocation` were used to manage the application's routing, enabling immediate page redirection after successful authentication and updating the header based on the current page.
 
+
+## 🚀 Service deliverable
+
+For this deliverable I did the following:
+
+- [x] **Node.js/Express HTTP service** - I implemented a functional Node.js/Express HTTP service responsible for managing all application state, routing, and persistence
+- [x] **Static middleware for frontend** - I configured Express static middleware to efficiently serve the frontend build assets, linking the client application to the backend service.
+- [x] **Calls to third party endpoints** - The service uses core Node modules like bcryptjs for secure password hashing. I also make third party calls to leaflet to populate the map, allow scrolling, marker placemnet, and coordinate storage.
+- [x] **Backend service endpoints** - I developed comprehensive backend API endpoints to handle protected data access, including operations for user-specific fish logs, trip plans, and friend requests, and trip planning.
+- [x] **Frontend calls service endpoints** - The entire React frontend is integrated using the fetch API to call service endpoints for all application tasks, including fetching user-specific logs and calculating the social leaderboard. Friend requests can now be seen from the receiving user and either accepted or denied.
+- [x] **Supports registration, login, logout, and restricted endpoint** - I implemented secure registration, login, and logout functionality using cookies and tokens, with middleware enforcing access restrictions on all user data endpoints.
+
 ---
 
 
@@ -147,17 +159,6 @@ sequenceDiagram
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
-
-## 🚀 Service deliverable
-
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
 
 
 ## 🚀 DB deliverable
