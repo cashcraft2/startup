@@ -17,9 +17,12 @@ app.use(express.json({ limit: '50mb' }));
 
 app.use(cookieParser());
 
+var apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
 app.use(express.static('public'));
 
-var apiRouter = express.Router();
+
 
 // Middleware functions
 
@@ -38,10 +41,13 @@ async function authenticate(req, res, next) {
 async function createUser(email, password, username) {
     const passwordHash = await bcrypt.hash(password, 10);
 
+    const normalizedEmail = email.toLowerCase();
+    const normalizedUsername = username.toLowerCase();
+
     const user = {
-        email: email,
+        email: normalizedEmail,
         password: passwordHash,
-        username: username,
+        username: normalizedUsername,
         token: uuid.v4(),
         profilePictureUrl: '/placeholder.png',
     };
@@ -54,15 +60,17 @@ async function createUser(email, password, username) {
 async function findUser(field, value) {
     if (!value) return null;
 
+    const normalizedValue = value.toLowerCase();
+
     if (field === 'token') {
         return DB.getUserByToken(value);
     }
 
     if (field === 'username') {
-        return DB.getUserByUsername(value);
+        return DB.getUserByUsername(normalizedValue);
     }
 
-    return DB.getUser(value);
+    return DB.getUser(normalizedValue);
 }
 
 function setAuthCookie(res, authToken) {
@@ -76,7 +84,6 @@ function setAuthCookie(res, authToken) {
 
 // API endpoints
 
-app.use(`/api`, apiRouter);
 
 apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('email', req.body.email)) {
@@ -106,8 +113,7 @@ apiRouter.post('/auth/login', async (req, res) => {
 apiRouter.delete('/auth/logout', async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
-        delete user.token;
-        DB.updateUser(user);
+        await DB.removeUserToken(user.email);
     }
     res.clearCookie(authCookieName);
     res.status(204).end();

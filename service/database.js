@@ -4,7 +4,7 @@ const config = require('./dbConfig.json');
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
 const db = client.db('outfishn');
-const userCollection = db.collection('users');
+const usersCollection = db.collection('users');
 const scoreCollection = db.collection('catches');
 
 // This will asynchronously test the connection and exit the process if it fails
@@ -34,6 +34,10 @@ const scoreCollection = db.collection('catches');
     await usersCollection.insertOne(user);
   }
 
+  async function removeUserToken(email) {
+    await userCollection.updateOne({ email: email }, { $unset: { token: "" } });
+  }
+
   async function updateUser(user) {
     await usersCollection.updateOne({ email: user.email }, { $set: user });
   }
@@ -49,4 +53,5 @@ const scoreCollection = db.collection('catches');
     addUser,
     updateUser,
     addCatch,
+    removeUserToken,
   };
