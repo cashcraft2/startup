@@ -7,7 +7,6 @@ const DB = require('./database.js');
 
 const authCookieName = 'token';
 
-let pendingFriendRequests = [];
 let trips = [];
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -204,24 +203,16 @@ apiRouter.post('/friend/request', authenticate, async (req, res) => {
             receiverUsername: friend.username,
             timestamp: new Date().toISOString(),
         };
-        pendingFriendRequests.push(newRequest);
+        await DB.addPendingRequest(newRequest);
+
         res.status(200).send({ msg: `Friend request sent to ${friend.username}` });
     } else {
         res.status(404).send({ msg: `User with the email ${friendEmail} not found.` });
     }
 });
 
-const mockFriends = (username) => {
-    if (username === 'testuser') {
-        return ['Jane Doe', 'Mike Jensen'];
-    }
-    return [];
-};
-
-apiRouter.get('/friends/pending', authenticate, (req, res) =>{
-    const pending = pendingFriendRequests.filter(
-        (requestItem) => requestItem.receiverUsername === req.user.username
-    );
+apiRouter.get('/friends/pending', authenticate, async (req, res) =>{
+    const pending = await DB.getPendingRequests(req.user.username);
     res.send(pending);
 });
 
@@ -229,21 +220,15 @@ apiRouter.post('/friends/accept/:senderUsername', authenticate, async (req, res)
     const senderUsername = req.params.senderUsername;
     const receiverUsername = req.user.username;
 
-    const sender = await findUser('username', senderUsername);
+    const deleteResult = await DB.removePendingRequest(senderUsername, receiverUsername);
 
-    if (!sender) {
-        return res.status(404).send({ msg: 'Sender user not found.' });
-    }
-
-    const initialCount = pendingFriendRequests.length;
-
-    pendingFriendRequests = pendingFriendRequests.filter(
-        (pendingReq) => !(pendingReq.senderUsername === senderUsername && pendingReq.receiverUsername === receiverUsername)
-    );
-    if (pendingFriendRequests.length < initialCount) {
+    if (deleteResult.deletedCount > 0) {
+        const sender = await findUser('username', senderUsername);
         await DB.addFriend(req.user.email, senderUsername);
 
-        await DB.addFriend(sender.email, receiverUsername);
+        if (sender) {
+            await DB.addFriend(sender.email, receiverUsername);
+        }
 
         console.log(`${receiverUsername} accepted ${senderUsername}'s friend request.`);
         res.status(200).send({ msg: `Successfully accepted ${senderUsername}` });
@@ -256,16 +241,13 @@ apiRouter.get('/friends', authenticate, (req, res) => {
     res.send(req.user.friends || []);
 });
 
-apiRouter.post('/friends/decline/:senderUsername', authenticate, (req, res) => {
+apiRouter.post('/friends/decline/:senderUsername', authenticate, async (req, res) => {
     const senderUsername = req.params.senderUsername;
     const receiverUsername = req.user.username;
 
-    const initialCount = pendingFriendRequests.length;
-    pendingFriendRequests = pendingFriendRequests.filter(
-        (pendingReq) => !(pendingReq.senderUsername === senderUsername && pendingReq.receiverUsername === receiverUsername)
-    );
+    const deleteResult = await DB.removePendingRequest(senderUsername, receiverUsername);
 
-    if (pendingFriendRequests.length < initialCount) {
+    if (deleteResult.deletedCount > 0) {
         res.status(200).send({ msg: `Successfully declined ${senderUsername}` });
     } else {
         res.status(404).send({ msg: 'Pending request not found.' });
