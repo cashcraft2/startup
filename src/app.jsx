@@ -40,6 +40,8 @@ function AppContent() {
     const [notifications, setNotifications] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
 
+    const [leaderboardType, setLeaderboardType] = useState('global');
+
 
     const signout = useCallback(async (silent = false) => {
         try {
@@ -59,11 +61,13 @@ function AppContent() {
             setUserLog([]);
             setLeaderboardCatches([]);
             setNotifications([]);
+            setLeaderboardType('global');
             navigate('/');
         }
     }, [navigate]);
     
-    const fetchUserData = useCallback(async () => {
+    const fetchUserData = useCallback(async (type) => {
+        const currentType = type || leaderboardType;
         try {
             let response = await fetch('/api/user');
             if (!response.ok) {
@@ -77,11 +81,12 @@ function AppContent() {
                 const privateCatches = await response.json();
                 setUserLog(privateCatches);
             }
-
-            response = await fetch('/api/leaderboard');
+            const leaderboardUrl = `/api/leaderboard?type=${currentType}`;
+            response = await fetch(leaderboardUrl);
             if (response.ok) {
                 const socialCatches = await response.json();
                 setLeaderboardCatches(socialCatches);
+                if (type) setLeaderboardType(type);
             }
 
             response = await fetch('/api/friends/pending');
@@ -104,6 +109,11 @@ function AppContent() {
             fetchUserData();
         }
     }, [authState, fetchUserData]);
+
+    const handleLeaderboardTypeChange = useCallback((newType) => {
+        setLeaderboardType(newType);
+        fetchUserData(newType); 
+    }, [fetchUserData]);
 
     const handleNewCatch = useCallback(async (newCatch) => {
         try{
@@ -214,6 +224,8 @@ function AppContent() {
                         setNotifications={setNotifications}
                         pendingRequests={pendingRequests}
                         setPendingRequests={setPendingRequests}
+                        onLeaderboardTypeChange={handleLeaderboardTypeChange}
+                        currentLeaderboardType={leaderboardType}
                     />} 
                 />
                 <Route path='/log' element={<Log userName={userName} catches={userLog} onCatchLogged={handleNewCatch} />} />

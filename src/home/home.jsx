@@ -52,13 +52,15 @@ function FriendRequestItem({ request, onAction, setNotifications }) {
 
 
 
-export function Home({ userName, leaderboard, notifications, setNotifications, pendingRequests, setPendingRequests }) {
+export function Home({ userName, leaderboard, notifications, setNotifications, pendingRequests, setPendingRequests, onLeaderboardTypeChange }) {
     const [friendEmail, setFriendEmail] = useState('');
     const [profilePicture, setProfilePicture] = useState(
         localStorage.getItem(`${userName}-profile-pic`) || '/placeholder.png'
     );
 
     const [friends, setFriends] = useState([]);
+
+    const [leaderboardType, setLeaderboardType] = useState('global');
 
     const handleRemoveFriend = async (friendUsername) => {
         if (!window.confirm(`Are you sure you want to remove ${friendUsername} as a friend?`)) {
@@ -113,6 +115,13 @@ export function Home({ userName, leaderboard, notifications, setNotifications, p
 
         if (action === 'accept') {
             fetchFriends(); // Refresh friends list if accepted
+        }
+    };
+
+    const handleLeaderboardTypeChange = (newType) => {
+        setLeaderboardType(newType);
+        if (onLeaderboardTypeChange) {
+            onLeaderboardTypeChange(newType);
         }
     };
 
@@ -238,6 +247,24 @@ export function Home({ userName, leaderboard, notifications, setNotifications, p
                 
                     <div className="leaderboard-section box-shadow-style">
                         <h2>Leaderboard</h2>
+                        <div className="leaderboard-toggle">
+                            <button
+                                className={`button leaderboard-btn ${leaderboardType === 'global' ? 'active-type' : ''}`}
+                                onClick={() => handleLeaderboardTypeChange('global')}
+                            >
+                                Global
+                            </button>
+                            <button
+                                className={`button leaderboard-btn ${leaderboardType === 'friends' ? 'active-type' : ''}`}
+                                onClick={() => handleLeaderboardTypeChange('friends')}
+                                disabled={friends.length === 0} 
+                            >
+                                Friends
+                            </button>
+                            {friends.length === 0 && leaderboardType === 'friends' && (
+                                <span className='no-friends-warning'>Add friends to view friend leaderboard.</span>
+                            )}
+                        </div>
                         <table className="leaderboard">
                             <thead>
                                 <tr>

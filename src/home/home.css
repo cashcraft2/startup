@@ -318,6 +318,51 @@ main {
     color: white;
 }
 
+.leaderboard-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.leaderboard-btn {
+    background-color: var(--soft-gray-bg, #ccc);
+    color: #333;
+    padding: 0.5em 1.2em;
+    border-radius: 8px;
+    font-weight: 500;
+    flex-grow: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.leaderboard-btn:hover:not(:disabled):not(.active-type) {
+    background-color: #b0b0b0;
+}
+
+.leaderboard-btn.active-type {
+    background-color: var(--primary-blue, rgb(27,41,88)); 
+    color: white;
+    font-weight: 600;
+}
+
+.leaderboard-btn.active-type:hover {
+    background-color: var(--secondary-teal, rgb(106, 197, 176)); 
+    color: white;
+}
+
+.leaderboard-btn:disabled {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.no-friends-warning {
+    font-size: 0.9em;
+    color: #dc3545;
+    margin-left: 10px;
+}
+
 
 
 @media (max-width: 768px) {
