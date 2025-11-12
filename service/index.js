@@ -251,6 +251,10 @@ apiRouter.post('/friends/accept/:senderUsername', authenticate, async (req, res)
     }
 });
 
+apiRouter.get('/friends', authenticate, (req, res) => {
+    res.send(req.user.friends || []);
+});
+
 apiRouter.post('/friends/decline/:senderUsername', authenticate, (req, res) => {
     const senderUsername = req.params.senderUsername;
     const receiverUsername = req.user.username;
@@ -268,10 +272,19 @@ apiRouter.post('/friends/decline/:senderUsername', authenticate, (req, res) => {
 });
 
 apiRouter.get('/leaderboard', authenticate, (req, res) => {
+    const leaderboardType = req.query.type;
     const currentUser = req.user.username;
-    const friends = mockFriends(currentUser);
 
-    const permittedAnglers = [currentUser, ...friends];
+
+    let permittedAnglers = [];
+
+    if (leaderboardType === 'friends') {
+        const friends = req.user.friends || [];
+        permittedAnglers = [currentUser, ...friends];
+    } else {
+        const friends = mockFriends(currentUser);
+        permittedAnglers = [currentUser, ...friends];
+    }
 
     const socialCatches = catches.filter(
         (catchItem) => permittedAnglers.includes(catchItem.angler)
