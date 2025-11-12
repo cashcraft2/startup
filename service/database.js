@@ -7,6 +7,7 @@ const db = client.db('outfishn');
 const usersCollection = db.collection('users');
 const catchesCollection = db.collection('catches');
 const requestCollection = db.collection('friendRequests');
+const tripCollection = db.collection('trips');
 
 
 // This will asynchronously test the connection and exit the process if it fails
@@ -90,6 +91,21 @@ const requestCollection = db.collection('friendRequests');
     });
   }
 
+  async function addTrip(trip) {
+    return tripCollection.insertOne(trip);
+  }
+
+  async function getTripByUser(plannerUsername) {
+    return tripCollection.find({ planner: plannerUsername }).sort({ date: 1 }).toArray();
+  }
+
+  async function deleteTrip(id, plannerUsername) {
+    return tripCollection.deleteOne({
+      _id: new ObjectId(id),
+      planner: plannerUsername,
+    });
+  }
+
   module.exports = {
     getUser,
     getUserByToken,
@@ -106,4 +122,7 @@ const requestCollection = db.collection('friendRequests');
     getPendingRequests,
     removePendingRequest,
     removeFriend,
+    addTrip,
+    getTripByUser,
+    deleteTrip,
   };
