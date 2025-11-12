@@ -7,8 +7,6 @@ const DB = require('./database.js');
 
 const authCookieName = 'token';
 
-let trips = [];
-
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 app.use(express.json({ limit: '50mb' }));
@@ -147,16 +145,13 @@ apiRouter.get('/catches', authenticate, async (req, res) => {
     res.send(userCatches);
 });
 
-apiRouter.get('/trips', authenticate, (req, res) => {
-    const userTrips = trips.filter(
-        (trip) => trip.planner === req.user.username
-    ).sort((a, b) => new Date(a.date) - new Date(b.date));
+apiRouter.get('/trips', authenticate, async (req, res) => {
+    const userTrips = await DB.getTripByUser(req.user.username);
     res.send(userTrips);
 });
 
-apiRouter.post('/trip', authenticate, (req, res) => {
+apiRouter.post('/trip', authenticate, async (req, res) => {
     const newTrip = {
-        id: uuid.v4(),
         planner: req.user.username,
         name: req.body.name,
         location: req.body.location,
@@ -168,23 +163,25 @@ apiRouter.post('/trip', authenticate, (req, res) => {
     if (!newTrip.name || !newTrip.location || !newTrip.date) {
         return res.status(400).send({ msg: 'Trip name, location, and date required.' });
     }
+    const result = await DB.addTrip(newTrip);
 
-    trips.push(newTrip);
-    res.status(201).send(newTrip);
+    if(result.acknowledged) {
+        res.status(201).send({ ...newTrip, id: result.insertedId});
+    } else {
+        res.status(500).send({ msg: 'Failed to plan a trip.' });
+    } 
 });
 
-apiRouter.delete('/trip/:id', authenticate, (req, res) => {
+apiRouter.delete('/trip/:id', authenticate, async (req, res) => {
     const tripId = req.params.id;
-    const initialLength = trips.length;
+    const plannerUsername = req.user.username;
 
-    trips = trips.filter(
-        (trip) => !(trip.id === tripId && trip.planner === req.user.username)
-    );
+    const deleteResult = await DB.deleteTrip(tripId, plannerUsername);
 
-    if (trips.length < initialLength) {
+    if (deleteResult.deletedCount > 0) {
         res.status(204).end();
     } else {
-        res.status(404).send({ msg: 'Trip not found or not authorized to delete.' });
+        res.status(404).send({ msg: 'Trip not found or not authorized to delete trip.' });
     }
 });
 
