@@ -252,6 +252,74 @@ main {
     display: block;
 }
 
+.friends-list-section h2.friends-header {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: rgb(27,41,88); /* --primary-blue */
+    margin-bottom: 1em;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5em;
+}
+
+.friends-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.friend-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    font-weight: 500; 
+    transition: background-color 0.2s;
+    cursor: default;
+    line-height: 1.4;
+}
+
+.friend-item:last-child {
+    border-bottom: none;
+}
+
+.friend-item:hover {
+    background-color: #f7f7f7;
+    padding-left: 5px;
+}
+
+.no-friends-msg {
+    color: #6c757d;
+    font-style: italic;
+    padding: 10px 0;
+}
+
+.friend-item-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0; 
+}
+
+.friend-item-with-button span {
+    flex-grow: 1; 
+    font-weight: 600; 
+}
+
+.btn-remove-friend {
+    padding: 0.4em 0.8em;
+    font-size: 0.8em;
+    border-radius: 5px;
+    font-weight: 500;
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-remove-friend:hover {
+    background-color: #c82333;
+    color: white;
+}
+
+
+
 @media (max-width: 768px) {
     main {
         padding: 10px;

@@ -51,6 +51,13 @@ const requestCollection = db.collection('friendRequests');
     );
   }
 
+  async function removeFriend(userEmail, friendUsername) {
+    await usersCollection.updateOne(
+      { email: userEmail },
+      { $pull: { friends: friendUsername } }
+    );
+  }
+
   async function addCatch(fish) {
     return catchesCollection.insertOne(fish);
   }
@@ -98,4 +105,5 @@ const requestCollection = db.collection('friendRequests');
     addPendingRequest,
     getPendingRequests,
     removePendingRequest,
+    removeFriend,
   };

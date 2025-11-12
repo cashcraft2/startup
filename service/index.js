@@ -254,6 +254,26 @@ apiRouter.post('/friends/decline/:senderUsername', authenticate, async (req, res
     }
 });
 
+apiRouter.delete('/friends/:friendUsername', authenticate, async (req, res) => {
+    const friendUsername = req.params.friendUsername;
+    const currentUserEmail = req.user.email;
+    const currentUsername = req.user.username;
+
+    const friend = await findUser('username', friendUsername);
+
+    if (!friend) {
+        return res.status(404).send({ msg: 'Friend not found or already removed.' });
+    }
+
+    await DB.removeFriend(currentUserEmail, friendUsername);
+
+    await DB.removeFriend(friend.email, currentUsername);
+
+    req.user.friends = req.user.friends.filter(f => f !== friendUsername);
+    
+    res.status(204).end();
+});
+
 apiRouter.get('/leaderboard', authenticate, async (req, res) => {
     const leaderboardType = req.query.type;
     const currentUser = req.user.username;

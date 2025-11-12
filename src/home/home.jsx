@@ -11,7 +11,7 @@ function FriendRequestItem({ request, onAction, setNotifications }) {
 
             if (response.ok) {
                 const result = await response.json();
-                onAction(request.senderUsername);
+                onAction(request.senderUsername, action);
 
                 const message = `${request.senderUsername}'s request was ${action}ed.`;
                 setNotifications(prev => [{id: Date.now(), message, timestamp: new Date().toISOString()}, ...prev]);
@@ -50,18 +50,70 @@ function FriendRequestItem({ request, onAction, setNotifications }) {
     );
 }
 
+
+
 export function Home({ userName, leaderboard, notifications, setNotifications, pendingRequests, setPendingRequests }) {
     const [friendEmail, setFriendEmail] = useState('');
     const [profilePicture, setProfilePicture] = useState(
         localStorage.getItem(`${userName}-profile-pic`) || '/placeholder.png'
     );
+
+    const [friends, setFriends] = useState([]);
+
+    const handleRemoveFriend = async (friendUsername) => {
+        if (!window.confirm(`Are you sure you want to remove ${friendUsername} as a friend?`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/friends/${friendUsername}`, {
+                method: 'DELETE',
+            });
+
+            if (response.status === 204) {
+                setFriends(prevFriends => prevFriends.filter(name => name !== friendUsername));
+
+                const newNotification = {
+                    id: Date.now() + 1,
+                    message: `${friendUsername} has been removed from your friends list.`,
+                    timestamp: new Date().toISOString(),
+                };
+                setNotifications(prevNotifs => [newNotification, ...prevNotifs]);
+
+            } else {
+                alert(`Failed to remove friend: Server error.`);
+            }
+        } catch (error) {
+            console.error('Network error removing friend: ', error);
+            alert('A network error occurred while removing the friend.');
+        }
+    };
+
+    const fetchFriends = async () => {
+        try {
+            const response = await fetch('/api/friends');
+            if (response.ok) {
+                const friendList = await response.json();
+                setFriends(friendList);
+            } else {
+                console.error("Failed to fetch friends list.");
+            }
+        } catch (error) {
+            console.error("Network error fetching friends:", error);
+        }
+    };
     
     useEffect(() => {
         document.title = 'OutFishn | Home';
-    }, []);
+        fetchFriends();
+    }, [userName]);
 
-    const handleRequestAction = (senderUsername) => {
+    const handleRequestAction = (senderUsername, action) => {
         setPendingRequests(prev => prev.filter(req => req.senderUsername !== senderUsername));
+
+        if (action === 'accept') {
+            fetchFriends(); // Refresh friends list if accepted
+        }
     };
 
     const handleFriendSubmit = async (event) => {
@@ -236,6 +288,29 @@ export function Home({ userName, leaderboard, notifications, setNotifications, p
                                     </div>
                                 </li>
                             ))}
+                        </ul>
+                    </div>
+
+                    <div className="friends-list-section box-shadow-style">
+                        <h2 className="friends-header">My Friends ({friends.length})</h2>
+                        <ul className="friends-list">
+                            {friends.length > 0 ? (
+                                friends.map((friendName, index) => (
+                                    <li key={index} className="friend-item friend-item-with-button">
+                                        <span>{friendName}</span>
+                                        <button 
+                                            className="button btn-remove-friend"
+                                            onClick={() => handleRemoveFriend(friendName)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <li className="no-friends-msg">
+                                    No friends yet. Send a request!
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
