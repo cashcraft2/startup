@@ -7,7 +7,6 @@ const DB = require('./database.js');
 
 const authCookieName = 'token';
 
-let catches = [];
 let pendingFriendRequests = [];
 let trips = [];
 
@@ -128,22 +127,24 @@ apiRouter.get('/user', authenticate, (req, res) => {
     });
 });
 
-apiRouter.post('/catch', authenticate, (req, res) => {
+apiRouter.post('/catch', authenticate, async (req, res) => {
     const newCatch = {
-        id: uuid.v4(),
         angler: req.user.username,
         timestamp: new Date().toISOString(),
         ...req.body,
     };
 
-    catches.push(newCatch);
-    res.status(201).send(newCatch);
+    const result = await DB.addCatch(newCatch);
+
+    if (result.acknowledged) {
+        res.status(201).send({ ...newCatch, _id: result.insertedId });
+    } else {
+        res.status(500).send({ msg: 'Failed to save catch.' });
+    }
 });
 
-apiRouter.get('/catches', authenticate, (req, res) => {
-    const userCatches = catches.filter(
-        (catchItem) => catchItem.angler === req.user.username
-    );
+apiRouter.get('/catches', authenticate, async (req, res) => {
+    const userCatches = await DB.getCatchesByUser(req.user.username);
     res.send(userCatches);
 });
 
@@ -271,7 +272,7 @@ apiRouter.post('/friends/decline/:senderUsername', authenticate, (req, res) => {
     }
 });
 
-apiRouter.get('/leaderboard', authenticate, (req, res) => {
+apiRouter.get('/leaderboard', authenticate, async (req, res) => {
     const leaderboardType = req.query.type;
     const currentUser = req.user.username;
 
@@ -282,13 +283,11 @@ apiRouter.get('/leaderboard', authenticate, (req, res) => {
         const friends = req.user.friends || [];
         permittedAnglers = [currentUser, ...friends];
     } else {
-        const friends = mockFriends(currentUser);
-        permittedAnglers = [currentUser, ...friends];
+        const allUsers = await DB.getAllUsernames();
+        permittedAnglers = allUsers;
     }
 
-    const socialCatches = catches.filter(
-        (catchItem) => permittedAnglers.includes(catchItem.angler)
-    );
+    const socialCatches = await DB.getSocialCatches(permittedAnglers);
     res.send(socialCatches);
 });
   
