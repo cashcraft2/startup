@@ -44,10 +44,10 @@ const requestCollection = db.collection('friendRequests');
     await usersCollection.updateOne({ email: user.email }, { $set: user });
   }
 
-  async function addFriend(userEmail, friendEmail) {
+  async function addFriend(userEmail, friendUsername) {
     await usersCollection.updateOne(
       { email: userEmail },
-      { $addToSet: { friends: friendEmail } }
+      { $addToSet: { friends: friendUsername } }
     );
   }
 
