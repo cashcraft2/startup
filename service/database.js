@@ -6,6 +6,8 @@ const client = new MongoClient(url);
 const db = client.db('outfishn');
 const usersCollection = db.collection('users');
 const catchesCollection = db.collection('catches');
+const requestCollection = db.collection('friendRequests');
+
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -66,6 +68,21 @@ const catchesCollection = db.collection('catches');
     return users.map(user => user.username);
   }
 
+  async function addPendingRequest(request) {
+    return requestCollection.insertOne(request);
+  }
+
+  async function getPendingRequests(receiverUsername) {
+    return requestCollection.find({ receiverUsername: receiverUsername}).toArray();
+  }
+
+  async function removePendingRequest(senderUsername, receiverUsername) {
+    return requestCollection.deleteOne({
+      senderUsername: senderUsername,
+      receiverUsername: receiverUsername,
+    });
+  }
+
   module.exports = {
     getUser,
     getUserByToken,
@@ -78,4 +95,7 @@ const catchesCollection = db.collection('catches');
     getCatchesByUser,
     getSocialCatches,
     getAllUsernames,
+    addPendingRequest,
+    getPendingRequests,
+    removePendingRequest,
   };
