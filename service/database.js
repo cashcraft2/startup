@@ -46,6 +46,13 @@ const scoreCollection = db.collection('catches');
     return catchesCollection.insertOne(fish);
   }
 
+  async function addFriend(userEmail, friendEmail) {
+    await usersCollection.updateOne(
+      { email: userEmail },
+      { $addToSet: { friends: friendEmail } }
+    );
+  }
+
   module.exports = {
     getUser,
     getUserByToken,
@@ -54,4 +61,5 @@ const scoreCollection = db.collection('catches');
     updateUser,
     addCatch,
     removeUserToken,
+    addFriend,
   };

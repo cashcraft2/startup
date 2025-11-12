@@ -50,6 +50,7 @@ async function createUser(email, password, username) {
         username: normalizedUsername,
         token: uuid.v4(),
         profilePictureUrl: '/placeholder.png',
+        friends: [],
     };
 
     await DB.addUser(user);
@@ -227,11 +228,22 @@ apiRouter.post('/friends/accept/:senderUsername', authenticate, async (req, res)
     const senderUsername = req.params.senderUsername;
     const receiverUsername = req.user.username;
 
+    const sender = await findUser('username', senderUsername);
+
+    if (!sender) {
+        return res.status(404).send({ msg: 'Sender user not found.' });
+    }
+
     const initialCount = pendingFriendRequests.length;
+
     pendingFriendRequests = pendingFriendRequests.filter(
         (pendingReq) => !(pendingReq.senderUsername === senderUsername && pendingReq.receiverUsername === receiverUsername)
     );
     if (pendingFriendRequests.length < initialCount) {
+        await DB.addFriend(req.user.email, senderUsername);
+
+        await DB.addFriend(sender.email, receiverUsername);
+
         console.log(`${receiverUsername} accepted ${senderUsername}'s friend request.`);
         res.status(200).send({ msg: `Successfully accepted ${senderUsername}` });
     } else {
