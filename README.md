@@ -125,6 +125,15 @@ For this deliverable I did the following:
 - [x] **Frontend calls service endpoints** - The entire React frontend is integrated using the fetch API to call service endpoints for all application tasks, including fetching user-specific logs and calculating the social leaderboard. Friend requests can now be seen from the receiving user and either accepted or denied.
 - [x] **Supports registration, login, logout, and restricted endpoint** - I implemented secure registration, login, and logout functionality using cookies and tokens, with middleware enforcing access restrictions on all user data endpoints.
 
+
+
+## 🚀 DB deliverable
+
+For this deliverable I did the following:
+
+- [x] **Stores data in MongoDB** - I changed all local storage in the application over to `collections` in MongoDB. We have a `user`, `catches`, `trips`, and `pending requests` collection set up. Friends are directly stored in an array within the given user object. As friend requests are sent, the request is persisted in the `pending requests` collection until approved by the receiving user. Then it is removed, and both users are updated to have a new friend. Catches are stored globally, and then as friends are added, users have the option to toggle between a global leaderboard and a friends only leaderboard. New planned trips are also stored persistantly and filtered by user.
+- [x] **Stores credentials in MongoDB** - The `users` collection within MongoDB is comprised of various user objects (user profiles). Each user's email and username is stored persistantly. Passwords are encrypted before entering the database for added security. These are also saved. This allows for the user to login each time after registering instead of registering each time. Usernames are displayed on leaderboards, and in the greeting on the home page. Emails are stored so that users can add friends by typing in someone's email.
+
 ---
 
 
@@ -160,13 +169,6 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
 
-
-## 🚀 DB deliverable
-
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
 
 ## 🚀 WebSocket deliverable
 
