@@ -145,7 +145,7 @@ apiRouter.get('/catches', authenticate, async (req, res) => {
     res.send(userCatches);
 });
 
-apiRouter.get('/trips', authenticate, async (req, res) => {
+apiRouter.get('/trip/:id', authenticate, async (req, res) => {
     const userTrips = await DB.getTripByUser(req.user.username);
     res.send(userTrips);
 });
@@ -175,6 +175,10 @@ apiRouter.post('/trip', authenticate, async (req, res) => {
 apiRouter.delete('/trip/:id', authenticate, async (req, res) => {
     const tripId = req.params.id;
     const plannerUsername = req.user.username;
+
+    if (!tripId || tripId.length < 12) {
+        return res.status(400).send({ msg: 'Invalid trip ID format.' });
+    }
 
     const deleteResult = await DB.deleteTrip(tripId, plannerUsername);
 

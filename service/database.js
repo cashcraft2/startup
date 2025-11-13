@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const config = require('./dbConfig.json');
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
@@ -100,10 +100,19 @@ const tripCollection = db.collection('trips');
   }
 
   async function deleteTrip(id, plannerUsername) {
-    return tripCollection.deleteOne({
-      _id: new ObjectId(id),
-      planner: plannerUsername,
-    });
+    if(typeof id !== 'string' || id.length !== 24) {
+      return { deletedCount: 0 };
+    }
+    
+    try {
+      return tripCollection.deleteOne({
+        _id: new ObjectId(id),
+        planner: plannerUsername,
+      });
+    } catch (ex) {
+      console.error(`Error creating ObjectId for trip ID ${id}: ${ex.message}`);
+      return { deletedCount: 0 };
+    }
   }
 
   module.exports = {

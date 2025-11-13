@@ -13,10 +13,11 @@ export function Plan({ userName }) {
 
     const fetchTrips = async () => {
         try {
-            const response = await fetch('/api/trips'); 
+            const response = await fetch('/api/trip/user'); 
             if (response.ok) {
                 const data = await response.json();
-                setTrips(data);
+                const mappedTrips = data.map(trip => ({ ...trip, id: trip._id }));
+                setTrips(mappedTrips);
             } else if (response.status === 401) {
                 console.error("User not authorized or logged out.");
                 setTrips([]);
@@ -36,6 +37,7 @@ export function Plan({ userName }) {
 
     const formatDate = (isoString) => {
         if (!isoString) return '';
+        if (!isoString.includes('-')) return isoString;
         const [year, month, day] = isoString.split('-');
         return `${month}/${day}/${year}`;
     };
@@ -67,7 +69,7 @@ export function Plan({ userName }) {
 
             if (response.ok) {
                 const addedTrip = await response.json();
-                setTrips(prevTrips => [addedTrip, ...prevTrips]);
+                setTrips(prevTrips => [...prevTrips, addedTrip].sort((a, b) => new Date(a.date) - new Date(b.date)));
                 
                 setTripName('');
                 setTripLocation('');
