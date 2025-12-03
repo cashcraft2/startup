@@ -88,6 +88,23 @@ function AppContent() {
 
     }, [authState, userName]);
 
+    const handleIncomingNotification = useCallback((data) => {
+        const newNotification = {
+            id: Date.now(),
+            message: data.message,
+            timestamp: data.timestamp,
+            type: data.type,
+        };
+
+        setNotifications(prevNotifs => [newNotification, ...prevNotifs]);
+
+        if (data.type === 'newCatch' || data.type === 'leaderboardSpot') {
+            fetchUserData(leaderboardType);
+        } else if (data.type === 'friendSignIn' || data.type === 'newTrip') {
+
+        }
+    }, [fetchUserData, leaderboardType]);
+
 
     const signout = useCallback(async (silent = false) => {
         try {
