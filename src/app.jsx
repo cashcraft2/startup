@@ -42,6 +42,52 @@ function AppContent() {
 
     const [leaderboardType, setLeaderboardType] = useState('global');
 
+    useEffect(() => {
+        let socket;
+
+        if (authState === AuthState.Authenticated && userName) {
+            const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+            const wsHost = window.location.host;
+            const url = `${protocol}://${wsHost}/ws`;
+
+            socket = new WebSocket(url);
+
+            socket.onopen = () => {
+                console.log('Websocket connected.');
+                socket.send(JSON.stringify({
+                    type: 'register',
+                    username: userName,
+                }));
+
+                setNotifications(prevNotifs => [{
+                    id: Date.now() + 1000,
+                    message: 'Real-time notifications enabled.',
+                    timestamp: new Date().toISOString()
+                }, ...prevNotifs]);
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleIncomingNotification(data);
+            };
+
+            socket.onerror = (error) => {
+                console.error('Websocket Error: ', error);
+            };
+
+            socket.onclose = () => {
+                console.log('Websocket disconnected.');
+            };
+        }
+
+        return () => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.close();
+            }
+        };
+
+    }, [authState, userName]);
+
 
     const signout = useCallback(async (silent = false) => {
         try {
