@@ -69,4 +69,19 @@ function initializeWebsockets(httpServer) {
     }, 10000);
 }
 
-module.exports = { initializeWebsockets };
+function notifyUser(username, payload) {
+    const userConnections = connections.get(username.toLowerCase());
+    if(userConnections) {
+        const message = JSON.stringify(payload);
+        userConnections.forEach(ws => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(message);
+                console.log(`Notification sent to ${username}: ${payload.type}`);
+            }
+        });
+    } else {
+        console.log(`No active WebSocket connections for ${username}.`);
+    }
+}
+
+module.exports = { initializeWebsockets, notifyUser };
