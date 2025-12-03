@@ -80,6 +80,32 @@ function setAuthCookie(res, authToken) {
     });
 }
 
+async function checkLeaderboardAndNotify(newCatch, friendsList) {
+    const currentAngler = newCatch.angler;
+    const permittedAnglers = [currentAngler, ...friendsList];
+    const socialCatches = await DB.getSocialCatches(permittedAnglers);
+    const socialLeaderboard = socialCatches.slice(0,10);
+    const rankIndex = socialLeaderboard.findIndex(c =>
+        c.angler === currentAngler && c.weight === newCatch.weight
+    );
+
+    if (rankIndex > -1) {
+        const rank = rankIndex + 1;
+
+        notifyUser(currentAngler, {
+            type: 'leaderboardSpot',
+            message: `🏆 Congrats! Your ${newCatch.species} catch is now rank #${rank} in the Friends Leaderboard!`,
+            details: {
+                rank: rank,
+                species: newCatch.species,
+                weight: newCatch.weight,
+                catchId: newCatch._id
+            },
+            timestamp: new Date().toISOString(),
+        });
+    }
+}
+
 // API endpoints
 
 
@@ -135,7 +161,23 @@ apiRouter.post('/catch', authenticate, async (req, res) => {
     const result = await DB.addCatch(newCatch);
 
     if (result.acknowledged) {
-        res.status(201).send({ ...newCatch, _id: result.insertedId });
+        const savedCatch = { ...newCatch, _id: result.insertedId };
+        const friends = req.user.friends || [];
+
+        if (friends.length > 0) {
+            friends.forEach(friendUsername => {
+                notifyUser(friendUsername, {
+                    type: 'newCatch',
+                    message: `🎣 ${req.user.username} logged a new catch: ${savedCatch.species}!`,
+                    details: { catch: savedCatch },
+                    timestamp: new Date().toISOString(),
+                });
+            });
+        }
+
+        await checkLeaderboardAndNotify(savedCatch, friends);
+
+        res.status(201).send(savedCatch);
     } else {
         res.status(500).send({ msg: 'Failed to save catch.' });
     }
