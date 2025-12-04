@@ -92,16 +92,21 @@ async function checkLeaderboardAndNotify(newCatch, friendsList) {
     if (rankIndex > -1) {
         const rank = rankIndex + 1;
 
-        notifyUser(currentAngler, {
+        const payload = {
             type: 'leaderboardSpot',
             message: `🏆 Congrats! Your ${newCatch.species} catch is now rank #${rank} in the Friends Leaderboard!`,
-            details: {
-                rank: rank,
-                species: newCatch.species,
-                weight: newCatch.weight,
-                catchId: newCatch._id
-            },
+            details: { rank: rank, species: newCatch.species, weight: newCatch.weight, catchId: newCatch._id },
             timestamp: new Date().toISOString(),
+        }
+
+        notifyUser(currentAngler, payload);
+
+        friendsList.forEach(friendUsername => {
+            const friendPayload = {
+                ...payload,
+                message: `📢 Friend update! ${currentAngler}'s catch just hit rank #${rank} on the Friends Leaderboard!`,
+            };
+            notifyUser(friendUsername, friendPayload);
         });
     }
 }
@@ -165,9 +170,10 @@ apiRouter.get('/user', authenticate, (req, res) => {
 
 apiRouter.post('/catch', authenticate, async (req, res) => {
     const newCatch = {
+        ...req.body,
         angler: req.user.username,
         timestamp: new Date().toISOString(),
-        ...req.body,
+        weight: parseFloat(req.body.weight),
     };
 
     const result = await DB.addCatch(newCatch);
