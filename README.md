@@ -134,6 +134,18 @@ For this deliverable I did the following:
 - [x] **Stores data in MongoDB** - I changed all local storage in the application over to `collections` in MongoDB. We have a `user`, `catches`, `trips`, and `pending requests` collection set up. Friends are directly stored in an array within the given user object. As friend requests are sent, the request is persisted in the `pending requests` collection until approved by the receiving user. Then it is removed, and both users are updated to have a new friend. Catches are stored globally, and then as friends are added, users have the option to toggle between a global leaderboard and a friends only leaderboard. New planned trips are also stored persistantly and filtered by user.
 - [x] **Stores credentials in MongoDB** - The `users` collection within MongoDB is comprised of various user objects (user profiles). Each user's email and username is stored persistantly. Passwords are encrypted before entering the database for added security. These are also saved. This allows for the user to login each time after registering instead of registering each time. Usernames are displayed on leaderboards, and in the greeting on the home page. Emails are stored so that users can add friends by typing in someone's email.
 
+
+
+## 🚀 WebSocket deliverable
+
+For this deliverable I did the following:
+
+- [x] **Backend listens for WebSocket connection** - Implemented the `initializeWebsockets` function in `websocket.js` (using ws) to handle the upgrade request from the Express server. Edited `index.js` to fully initialize websockets on backend. 
+- [x] **Frontend makes WebSocket connection** - Implemented the `useEffect` hook in `app.jsx` to create the WebSocket object and connect when the user is authenticated.
+- [x] **Data sent over WebSocket connection** - Implemented the `notifyUser` helper function in `websocket.js` and integrated notification triggers into API endpoints to send real-time JSON payloads for: Friend Sign-in/Sign-out, New Catch, and when a friend makes the Leaderboard Spot.
+- [x] **WebSocket data displayed** - Websocket messages are displayed actively in the home page for each user. These messages are set to appear when a user's friend signs in/out, logs a new catch, and makes top 10 on the friend leaderboard. These messages are displayed in the notification dashboard on the home page for each user.
+- [x] **Application is fully functional** - There is no more MOCK code in this application. Everything should function as expected. Data is persisted in a DB, Websocket notifications are live and sent in real-time, users can be authenticated and accounts saved persistantly. Users can add friends, log their own catches, have those catches added to either the global or friend leaderboards, plan their own personal fishing trips, and be notified when their friends are online or offline.
+
 ---
 
 
@@ -170,12 +182,4 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
 
 
-## 🚀 WebSocket deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
