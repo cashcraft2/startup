@@ -359,4 +359,4 @@ apiRouter.get('/leaderboard', authenticate, async (req, res) => {
     console.log(`Listening on port ${port}`);
 });
 
-initializeWebsockets(httpService);
+initializeWebsockets(httpService, DB);

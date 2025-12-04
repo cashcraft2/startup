@@ -1,8 +1,11 @@
+const { Db } = require('mongodb');
 const { WebSocketServer, WebSocket } = require('ws');
 
 const connections = new Map();
+let DB = null;
 
-function initializeWebsockets(httpServer) {
+function initializeWebsockets(httpServer, dbModule) {
+    DB = dbModule;
     const wss = new WebSocketServer({ noServer: true });
 
     httpServer.on('upgrade', (request, socket, head) => {
@@ -40,6 +43,12 @@ function initializeWebsockets(httpServer) {
         });
 
         ws.on('close', () => {
+            console.log(`[WS CLOSE DEBUG] Handling close for ${username}.`);
+
+            if (username) {
+                handleSignOut(username);
+            }
+
             if (username && connections.has(username)) {
                 const sockets = connections.get(username);
                 const index = sockets.indexOf(ws);
@@ -80,6 +89,22 @@ function notifyUser(username, payload) {
         });
     } else {
         console.log(`No active WebSocket connections for ${username}.`);
+    }
+}
+
+async function handleSignOut(username) {
+    if (!DB || !username) return;
+    const userWhoLoggedOut = await DB.getUserByUsername(username);
+
+    if (userWhoLoggedOut && userWhoLoggedOut.friends) {
+        userWhoLoggedOut.friends.forEach(friendUsername => {
+            notifyUser(friendUsername, {
+                type: 'friendSignOut',
+                message: `🔴 ${username} just signed out.`,
+                details: { username: username },
+                timestamp: new Date().toISOString(),
+            });
+        });
     }
 }
 

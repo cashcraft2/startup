@@ -38,10 +38,108 @@ function AppContent() {
     const [leaderboardCatches, setLeaderboardCatches] = useState([]);
     const leaderboard = calculateLeaderboard(leaderboardCatches);
 
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState(
+        JSON.parse(sessionStorage.getItem('appNotifications')) || []
+    );
+
     const [pendingRequests, setPendingRequests] = useState([]);
 
     const [leaderboardType, setLeaderboardType] = useState('global');
+
+    const updateNotifications = useCallback((newNotification) => {
+        setNotifications(prevNotifs => {
+            const updatedNotifs = Array.isArray(newNotification) ? [...newNotification, ...prevNotifs] : [newNotification, ...prevNotifs];
+
+            sessionStorage.setItem('appNotifications', JSON.stringify(updatedNotifs));
+            return updatedNotifs;
+        });
+    }, []);
+
+    const signout = useCallback(async (silent = false) => {
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: 'DELETE',
+            });
+
+            if (response.status !== 204 && !silent) {
+                console.error('Logout failed on server.');
+            } 
+        } catch (error) {
+            if (!silent) console.error('Network error during logout: ', error);
+        } finally {
+            localStorage.removeItem('userName');
+            sessionStorage.removeItem('appNotifications');
+            setAuthState(AuthState.Unauthenticated);
+            setUserName('');
+            setUserLog([]);
+            setLeaderboardCatches([]);
+            setNotifications([]);
+            setLeaderboardType('global');
+            navigate('/');
+        }
+    }, [navigate]);
+
+    const fetchUserData = useCallback(async (type) => {
+        const currentType = type || leaderboardType;
+        let userData;
+
+        try {
+            let response = await fetch('/api/user');
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data.');
+            }
+            userData = await response.json();
+            setUserName(userData.username);
+
+            response = await fetch('/api/catches');
+            if (response.ok) {
+                const privateCatches = await response.json();
+                setUserLog(privateCatches);
+            }
+            const leaderboardUrl = `/api/leaderboard?type=${currentType}`;
+            response = await fetch(leaderboardUrl);
+            if (response.ok) {
+                const socialCatches = await response.json();
+                setLeaderboardCatches(socialCatches);
+                if (type) setLeaderboardType(type);
+            }
+
+            response = await fetch('/api/friends/pending');
+            if (response.ok) {
+                const pending = await response.json();
+                setPendingRequests(pending);
+            }
+            
+        } catch (error) {
+            console.error('Error fetching initial data: ', error);
+            await signout(true);
+            return;
+        }
+
+        if (!sessionStorage.getItem('appNotifications') || notifications.length === 0) { 
+            updateNotifications({id: Date.now(), message: `Data loaded for ${userData.username}.`, timestamp: new Date().toISOString()});
+        }
+
+    }, [leaderboardType, signout, updateNotifications]);
+
+
+    const handleIncomingNotification = useCallback((data) => {
+        const newNotification = {
+            id: Date.now(),
+            message: data.message,
+            timestamp: data.timestamp,
+            type: data.type,
+        };
+
+        if (data.type === 'newCatch' || data.type === 'leaderboardSpot') {
+            fetchUserData(leaderboardType);
+        } else if (data.type === 'friendSignIn' || data.type === 'newTrip') {
+
+        }
+
+        updateNotifications(newNotification);
+        
+    }, [fetchUserData, leaderboardType, updateNotifications]);
 
     useEffect(() => {
         let socket;
@@ -59,12 +157,6 @@ function AppContent() {
                     type: 'register',
                     username: userName,
                 }));
-
-                setNotifications(prevNotifs => [{
-                    id: Date.now() + 1000,
-                    message: 'Real-time notifications enabled.',
-                    timestamp: new Date().toISOString()
-                }, ...prevNotifs]);
             };
 
             socket.onmessage = (event) => {
@@ -88,84 +180,6 @@ function AppContent() {
         };
 
     }, [authState, userName]);
-
-    const signout = useCallback(async (silent = false) => {
-        try {
-            const response = await fetch('/api/auth/logout', {
-                method: 'DELETE',
-            });
-
-            if (response.status !== 204 && !silent) {
-                console.error('Logout failed on server.');
-            } 
-        } catch (error) {
-            if (!silent) console.error('Network error during logout: ', error);
-        } finally {
-            localStorage.removeItem('userName');
-            setAuthState(AuthState.Unauthenticated);
-            setUserName('');
-            setUserLog([]);
-            setLeaderboardCatches([]);
-            setNotifications([]);
-            setLeaderboardType('global');
-            navigate('/');
-        }
-    }, [navigate]);
-
-    const fetchUserData = useCallback(async (type) => {
-        const currentType = type || leaderboardType;
-        try {
-            let response = await fetch('/api/user');
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data.');
-            }
-            const userData = await response.json();
-            setUserName(userData.username);
-
-            response = await fetch('/api/catches');
-            if (response.ok) {
-                const privateCatches = await response.json();
-                setUserLog(privateCatches);
-            }
-            const leaderboardUrl = `/api/leaderboard?type=${currentType}`;
-            response = await fetch(leaderboardUrl);
-            if (response.ok) {
-                const socialCatches = await response.json();
-                setLeaderboardCatches(socialCatches);
-                if (type) setLeaderboardType(type);
-            }
-
-            response = await fetch('/api/friends/pending');
-            if (response.ok) {
-                const pending = await response.json();
-                setPendingRequests(pending);
-            }
-            
-            if (notifications.length === 0) {
-                setNotifications([{id: Date.now(), message: `Data loaded for ${userData.username}.`, timestamp: new Date().toISOString()}]);
-            }
-        } catch (error) {
-            console.error('Error fetching initial data: ', error);
-            await signout(true);
-        }
-    }, [notifications.length, signout]);
-
-    const handleIncomingNotification = useCallback((data) => {
-        const newNotification = {
-            id: Date.now(),
-            message: data.message,
-            timestamp: data.timestamp,
-            type: data.type,
-        };
-
-        setNotifications(prevNotifs => [newNotification, ...prevNotifs]);
-
-        if (data.type === 'newCatch' || data.type === 'leaderboardSpot') {
-            fetchUserData(leaderboardType);
-        } else if (data.type === 'friendSignIn' || data.type === 'newTrip') {
-
-        }
-    }, [fetchUserData, leaderboardType]);
 
     useEffect(() => {
         if (authState === AuthState.Authenticated) {
