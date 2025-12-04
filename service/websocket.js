@@ -1,4 +1,3 @@
-const { use } = require('react');
 const { WebSocketServer, WebSocket } = require('ws');
 
 const connections = new Map();
@@ -19,7 +18,7 @@ function initializeWebsockets(httpServer) {
         console.log('New WebSocket connection established.');
 
 
-        wss.on('message', (message) => {
+        ws.on('message', (message) => {
             try {
                 const data = JSON.parse(message.toString());
 
@@ -45,11 +44,11 @@ function initializeWebsockets(httpServer) {
                 const sockets = connections.get(username);
                 const index = sockets.indexOf(ws);
                 if (index > -1) {
-                    sockets.spice(index, 1);
+                    sockets.splice(index, 1);
                     if (sockets.length === 0) {
                         connections.delete(username);
                     }
-                    console.log(`Connection for ${username} closed. Remaining: ${connections.had(username) ? connections.get(username).length : 0}`);
+                    console.log(`Connection for ${username} closed. Remaining: ${connections.has(username) ? connections.get(username).length : 0}`);
                 }
             }
         });

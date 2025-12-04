@@ -127,6 +127,18 @@ apiRouter.post('/auth/login', async (req, res) => {
             user.token = uuid.v4();
             await DB.updateUser(user);
             setAuthCookie(res, user.token);
+
+            if (user.friends && user.friends.length > 0) {
+                user.friends.forEach(friendUsername => {
+                    notifyUser(friendUsername, {
+                        type: 'friendSignIn',
+                        message: `✅ ${user.username} just signed in!`,
+                        details: { username: user.username },
+                        timestamp: new Date().toISOString(),
+                    });
+                });
+            }
+
             res.send({ username: user.username });
             return;
         }

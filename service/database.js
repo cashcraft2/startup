@@ -38,7 +38,7 @@ const tripCollection = db.collection('trips');
   }
 
   async function removeUserToken(email) {
-    await userCollection.updateOne({ email: email }, { $unset: { token: "" } });
+    await usersCollection.updateOne({ email: email }, { $unset: { token: "" } });
   }
 
   async function updateUser(user) {

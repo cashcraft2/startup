@@ -108,7 +108,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications, p
     useEffect(() => {
         document.title = 'OutFishn | Home';
         fetchFriends();
-    }, [userName]);
+    }, [userName, pendingRequests.length]);
 
     const handleRequestAction = (senderUsername, action) => {
         setPendingRequests(prev => prev.filter(req => req.senderUsername !== senderUsername));
@@ -276,7 +276,7 @@ export function Home({ userName, leaderboard, notifications, setNotifications, p
                             </thead>
                             <tbody>
                                 {leaderboard.map((item) => (
-                                    <tr key={item.rank}>
+                                    <tr key={item.id}>
                                         <td>{item.rank}</td>
                                         <td>{item.angler}</td>
                                         <td>{item.species}</td>

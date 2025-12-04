@@ -18,6 +18,7 @@ const calculateLeaderboard = (allCatches) => {
         angler: catchItem.angler,
         species: catchItem.species,
         weight: catchItem.weight,
+        id: catchItem._id || `${catchItem.angler}-${index}`,
     }));
 
     return leaderboard.slice(0, 10);
@@ -88,24 +89,6 @@ function AppContent() {
 
     }, [authState, userName]);
 
-    const handleIncomingNotification = useCallback((data) => {
-        const newNotification = {
-            id: Date.now(),
-            message: data.message,
-            timestamp: data.timestamp,
-            type: data.type,
-        };
-
-        setNotifications(prevNotifs => [newNotification, ...prevNotifs]);
-
-        if (data.type === 'newCatch' || data.type === 'leaderboardSpot') {
-            fetchUserData(leaderboardType);
-        } else if (data.type === 'friendSignIn' || data.type === 'newTrip') {
-
-        }
-    }, [fetchUserData, leaderboardType]);
-
-
     const signout = useCallback(async (silent = false) => {
         try {
             const response = await fetch('/api/auth/logout', {
@@ -128,7 +111,7 @@ function AppContent() {
             navigate('/');
         }
     }, [navigate]);
-    
+
     const fetchUserData = useCallback(async (type) => {
         const currentType = type || leaderboardType;
         try {
@@ -167,6 +150,23 @@ function AppContent() {
         }
     }, [notifications.length, signout]);
 
+    const handleIncomingNotification = useCallback((data) => {
+        const newNotification = {
+            id: Date.now(),
+            message: data.message,
+            timestamp: data.timestamp,
+            type: data.type,
+        };
+
+        setNotifications(prevNotifs => [newNotification, ...prevNotifs]);
+
+        if (data.type === 'newCatch' || data.type === 'leaderboardSpot') {
+            fetchUserData(leaderboardType);
+        } else if (data.type === 'friendSignIn' || data.type === 'newTrip') {
+
+        }
+    }, [fetchUserData, leaderboardType]);
+
     useEffect(() => {
         if (authState === AuthState.Authenticated) {
             fetchUserData();
@@ -191,27 +191,6 @@ function AppContent() {
 
                 setUserLog(prevCatches => [savedCatch, ...prevCatches]);
 
-                setLeaderboardCatches(prevSocialCatches => {
-                    const updatedCatches = [savedCatch, ...prevSocialCatches];
-                    const currentLeaderboard = calculateLeaderboard(updatedCatches);
-
-                    const madeLeaderboard = currentLeaderboard.some(item => 
-                        item.angler === savedCatch.angler && item.weight === savedCatch.weight
-                    );
-        
-                    if (madeLeaderboard) {
-                        const rank = currentLeaderboard.findIndex(item => item.angler === savedCatch.angler && item.weight === savedCatch.weight) + 1;
-                        const notification = {
-                            id: Date.now() + 1,
-                            message: `${savedCatch.angler}'s new catch is now rank #${rank} in the leaderboard! 🏆`,
-                            timestamp: new Date().toISOString(),
-                        };
-        
-                        setNotifications(prevNotifs => [notification, ...prevNotifs]);
-                    }
-        
-                    return updatedCatches;
-                });
                 return true;
             } else {
                 console.error('Failed to log catch: ', response.statusText);
